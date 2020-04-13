@@ -2,7 +2,9 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.User;
 import com.tstepnik.planner.repository.UserRepository;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserController {
 
     private final UserRepository userRepository;
