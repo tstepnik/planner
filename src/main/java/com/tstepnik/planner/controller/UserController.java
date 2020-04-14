@@ -3,6 +3,7 @@ package com.tstepnik.planner.controller;
 import com.tstepnik.planner.domain.User;
 import com.tstepnik.planner.exceptions.CustomErrorType;
 import com.tstepnik.planner.repository.UserRepository;
+import com.tstepnik.planner.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,59 +19,46 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequestMapping("/api/users")
 public class UserController {
 
     public static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = userService.getUsers();
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public User getLoggedUser(Principal principal) {
-        String login = principal.getName();
-        return userRepository.findByUserName(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public ResponseEntity<User> getLoggedUser(Principal principal) {
+        Optional<User> user = Optional.ofNullable(userService.getLoggedUser(principal));
+        if (user.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        Optional<User> currentUser = userRepository.findById(id);
-        if (currentUser.equals(Optional.empty())) {
-            logger.error("Unable to update. Product with id {} not found.", id);
-            return new ResponseEntity<>(new CustomErrorType("Unable to upate. Product with id " + id + " not found."),
-                    HttpStatus.NOT_FOUND);
-        }
-        currentUser.get().setPassword(user.getPassword());
-        currentUser.get().setEmail(user.getEmail());
-        currentUser.get().setFirstName(user.getFirstName());
-        currentUser.get().setLastName(user.getLastName());
-        currentUser.get().setUserName(user.getUserName());
-        userRepository.save(currentUser.get());
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        return userService.updateUser(user, id);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteUser(@PathVariable("id")Long id){
-        Optional<User> user = userRepository.findById(id);
-        if (user.equals(Optional.empty())){
-            logger.error("Unable to delete. User with id{} not found.",id);
-            return new ResponseEntity<>(new CustomErrorType("Unable to delete. User wit hid" + id + " not found."),
-                    HttpStatus.NOT_FOUND);
-        }
-        userRepository.deleteById(id);
-        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        return userService.deleteUser(id);
     }
 
 }

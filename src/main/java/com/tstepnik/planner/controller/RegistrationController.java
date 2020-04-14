@@ -7,9 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
+@RequestMapping("/api")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -20,8 +24,11 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
-        registrationService.register(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    public ResponseEntity<User> registerUser(@RequestBody User user){
+        Optional<User> registerUser = Optional.ofNullable(registrationService.register(user));
+        if (registerUser.isEmpty()){
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+        return new ResponseEntity<>(registerUser.get(),HttpStatus.CREATED);
     }
 }

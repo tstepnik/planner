@@ -11,21 +11,12 @@ import java.util.Set;
 @Entity(name = "users")
 public class User {
 
-    public User() {
-    }
-
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
-    @Column(name = "username")
-    private String userName;
+    private String login;
 
     private String firstName;
 
@@ -39,6 +30,14 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 
+    public User() {
+    }
+
+    public User(String userName, String password) {
+        this.login = userName;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
@@ -47,12 +46,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setLogin(String userName) {
+        this.login = userName;
     }
 
     public String getFirstName() {
@@ -101,7 +100,7 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(userName, user.userName) &&
+                Objects.equals(login, user.login) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
@@ -111,14 +110,14 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, firstName, lastName, email, password, roles);
+        return Objects.hash(id, login, firstName, lastName, email, password, roles);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + login + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
