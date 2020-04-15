@@ -5,9 +5,6 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class Task {
 
-    public Task() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +16,10 @@ public class Task {
     private boolean isArchived;
 
     @ManyToOne
-    User user;
+   private User user;
+
+    public Task() {
+    }
 
     public User getUser() {
         return user;

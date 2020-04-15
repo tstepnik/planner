@@ -2,16 +2,12 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.User;
 import com.tstepnik.planner.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +15,6 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    public static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -29,10 +24,6 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getUsers();
-        if (users.isEmpty()) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
         return ResponseEntity.ok(userService.getUsers());
     }
 
@@ -48,18 +39,19 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(user, id));
-        if (updateUser.isEmpty() || !updateUser.isPresent()) {
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
+        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
+        if (updateUser.isEmpty()) {
+
+            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
         }
         return ResponseEntity.ok(updateUser.get());
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }
