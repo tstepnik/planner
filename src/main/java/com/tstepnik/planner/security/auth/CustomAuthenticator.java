@@ -6,6 +6,7 @@ import com.tstepnik.planner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -40,7 +41,7 @@ public class CustomAuthenticator implements AuthenticationProvider {
 
         User user = userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Bad credentials");
+            throw new BadCredentialsException("Bad credentials");
         }
 
         return new UsernamePasswordAuthenticationToken(login, password, convertAuthorities(user.getRoles()));

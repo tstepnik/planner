@@ -26,7 +26,6 @@ public class RegistrationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public User register(User user) {
         if (emailExist(user.getEmail())) {
             throw new EmailAlreadyUsedException("There is account with that email adress.");

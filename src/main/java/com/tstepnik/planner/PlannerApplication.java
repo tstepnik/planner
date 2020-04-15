@@ -28,13 +28,9 @@ public class PlannerApplication {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Autowired
-
-
     public static void main(String[] args) {
         SpringApplication.run(PlannerApplication.class, args);
     }
-
 
     //TODO move this method to SQL file or sth similar, but don't keep it here.
     @PostConstruct
