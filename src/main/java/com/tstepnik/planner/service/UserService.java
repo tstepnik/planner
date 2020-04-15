@@ -5,6 +5,7 @@ import com.tstepnik.planner.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.List;
@@ -29,17 +30,17 @@ public class UserService {
         return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
-    public User updateUser( User user, long id) {
+    public User updateUser(User user, long id) {
         Optional<User> currentUser = userRepository.findById(id);
         currentUser.get().setPassword(user.getPassword());
         currentUser.get().setEmail(user.getEmail());
         currentUser.get().setFirstName(user.getFirstName());
         currentUser.get().setLastName(user.getLastName());
         currentUser.get().setLogin(user.getLogin());
-return  userRepository.save(currentUser.get());
+        return userRepository.save(currentUser.get());
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }

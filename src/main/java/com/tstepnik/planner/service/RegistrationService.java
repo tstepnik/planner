@@ -36,7 +36,7 @@ public class RegistrationService {
         user.getRoles().add(defaultRole.get());
         String passwordHash = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordHash);
-       return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     private boolean emailExist(String email) {
@@ -54,7 +54,8 @@ public class RegistrationService {
         }
         return false;
     }
-    public boolean isExist(User user){
+
+    public boolean isExist(User user) {
         return userRepository.existsById(user.getId());
     }
 }

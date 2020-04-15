@@ -19,16 +19,17 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @Autowired
-    public RegistrationController(RegistrationService registrationService){
-        this.registrationService=registrationService;
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user){
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
         Optional<User> registerUser = Optional.ofNullable(registrationService.register(user));
-        if (registerUser.isEmpty()){
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-        return new ResponseEntity<>(registerUser.get(),HttpStatus.CREATED);
+        if (registerUser.isEmpty()) {
+            //TODO remove it once you add exception handler.
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(registerUser.get(), HttpStatus.CREATED);
     }
 }

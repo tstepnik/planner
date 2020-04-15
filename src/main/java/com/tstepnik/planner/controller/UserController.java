@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Array;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +31,9 @@ public class UserController {
     public ResponseEntity<List<User>> getUsers() {
         List<User> users = userService.getUsers();
         if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(Collections.emptyList());
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     @GetMapping("/me")
@@ -40,7 +43,7 @@ public class UserController {
         if (user.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        return ResponseEntity.ok(user.get());
     }
 
     @PutMapping("/{id}")
@@ -50,7 +53,7 @@ public class UserController {
         if (updateUser.isEmpty() || !updateUser.isPresent()) {
             return new ResponseEntity<User>(updateUser.get(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<User>(updateUser.get(), HttpStatus.OK);
+        return ResponseEntity.ok(updateUser.get());
     }
 
     @DeleteMapping("/{id}")

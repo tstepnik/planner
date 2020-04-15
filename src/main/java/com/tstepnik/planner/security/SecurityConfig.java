@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return passwordEncoder;
     }
@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api").permitAll()
                 .antMatchers("/api/register").permitAll()
                 //TODO everybody now has access to database, change it later
-                .antMatchers( "/h2-console/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
