@@ -1,5 +1,4 @@
 package com.tstepnik.planner.controller;
-
 import com.tstepnik.planner.domain.User;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
