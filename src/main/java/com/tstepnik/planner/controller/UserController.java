@@ -49,7 +49,7 @@ public class UserController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
+        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(user, id));
         if (updateUser.isEmpty() || !updateUser.isPresent()) {
             return new ResponseEntity<User>(updateUser.get(), HttpStatus.NOT_FOUND);
         }
@@ -63,4 +63,3 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
