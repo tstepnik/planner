@@ -38,7 +38,7 @@ public class CustomAuthenticator implements AuthenticationProvider {
         String login = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        User user = userRepository.findByUserName(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Bad credentials");
         }

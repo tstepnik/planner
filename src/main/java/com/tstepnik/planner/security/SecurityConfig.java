@@ -33,7 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/register").permitAll()
+                .antMatchers("/api").permitAll()
+                .antMatchers("/api/register").permitAll()
                 //TODO everybody now has access to database, change it later
                 .antMatchers( "/h2-console/**").permitAll()
                 .anyRequest().authenticated()

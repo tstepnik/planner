@@ -6,6 +6,7 @@ import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -51,15 +52,19 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        return userService.updateUser(user, id);
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") long id) {
+        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
+        if (updateUser.isEmpty() || !updateUser.isPresent()) {
+            return new ResponseEntity<User>(updateUser.get(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<User>(updateUser.get(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
-        return userService.deleteUser(id);
+    public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
 

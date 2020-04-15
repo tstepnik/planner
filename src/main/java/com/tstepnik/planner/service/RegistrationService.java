@@ -49,7 +49,7 @@ public class RegistrationService {
     }
 
     private boolean loginExist(String login) {
-        Optional<User> user = userRepository.findByUserName(login);
+        Optional<User> user = userRepository.findByLogin(login);
         if (user.isPresent()) {
             return true;
         }

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -31,33 +31,20 @@ public class UserService {
 
     public User getLoggedUser(Principal principal) {
         String login = principal.getName();
-        return userRepository.findByUserName(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
-    public ResponseEntity<?> updateUser( User user, long id) {
+    public User updateUser( User user, long id) {
         Optional<User> currentUser = userRepository.findById(id);
-        if (currentUser.equals(Optional.empty())) {
-            logger.error("Unable to update. Product with id {} not found.", id);
-            return new ResponseEntity<>(new CustomErrorType("Unable to upate. Product with id " + id + " not found."),
-                    HttpStatus.NOT_FOUND);
-        }
         currentUser.get().setPassword(user.getPassword());
         currentUser.get().setEmail(user.getEmail());
         currentUser.get().setFirstName(user.getFirstName());
         currentUser.get().setLastName(user.getLastName());
         currentUser.get().setLogin(user.getLogin());
-        userRepository.save(currentUser.get());
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+return  userRepository.save(currentUser.get());
     }
 
-    public ResponseEntity<?> deleteUser(Long id){
-        Optional<User> user = userRepository.findById(id);
-        if (user.equals(Optional.empty())){
-            logger.error("Unable to delete. User with id{} not found.",id);
-            return new ResponseEntity<>(new CustomErrorType("Unable to delete. User wit hid" + id + " not found."),
-                    HttpStatus.NOT_FOUND);
-        }
+    public void deleteUser(Long id){
         userRepository.deleteById(id);
-        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 }
