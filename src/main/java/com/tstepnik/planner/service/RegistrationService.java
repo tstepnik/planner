@@ -1,5 +1,6 @@
 package com.tstepnik.planner.service;
 
+import com.tstepnik.planner.domain.User.Role;
 import com.tstepnik.planner.domain.User.User;
 import com.tstepnik.planner.domain.User.UserRole;
 import com.tstepnik.planner.exceptions.EmailAlreadyUsedException;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Service
 public class RegistrationService {
 
-    private final static String DEFAULT_ROLE = "ROLE_USER";
+    private final Role DEFAULT_ROLE = Role.ROLE_USER;
     private final UserRepository userRepository;
     private final UserRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,7 +33,8 @@ public class RegistrationService {
         } else if (loginExist(user.getLogin())) {
             throw new UserAlreadyExistException("There is account with that user name.");
         }
-        Optional<UserRole> defaultRole = roleRepository.findById(1L);
+        //TODO check if findByRole works properly.
+        Optional<UserRole> defaultRole = roleRepository.findByRole(DEFAULT_ROLE);
         user.getRoles().add(defaultRole.get());
         String passwordHash = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordHash);

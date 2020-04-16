@@ -1,5 +1,6 @@
 package com.tstepnik.planner.controller;
 
+import com.tstepnik.planner.domain.Task.Importance;
 import com.tstepnik.planner.domain.Task.Task;
 import com.tstepnik.planner.service.TaskService;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,16 @@ public class TaskController {
 
     @GetMapping("/{id}/usertasks")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Task>> getUserTasks(@PathVariable("id") Long userId) {
+    public ResponseEntity<List<Task>> getAllUserTasks(@PathVariable("id") Long userId) {
         return ResponseEntity.ok(taskService.getUserTasks(userId));
     }
+
+    @GetMapping("/{importance}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Task>> getUserTasks(@PathVariable("importance") Importance importance) {
+        return ResponseEntity.ok(taskService.getTaskByImportance(importance));
+    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -38,10 +46,18 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(taskId));
     }
 
+
     @GetMapping("/mytasks")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Task>> getLoggedUserTasks(Principal principal) {
-        return ResponseEntity.ok(taskService.getLoggedUserTasks(principal));
+    public ResponseEntity<List<Task>> getAllLoggedUserTasks(Principal principal) {
+        return ResponseEntity.ok(taskService.getAllLoggedUserTasks(principal));
+    }
+
+    @GetMapping("/mytasks/{importance}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<Task>> getLoggedUserTasks(Principal principal,
+                                                                     @PathVariable("importance") Importance importance) {
+        return ResponseEntity.ok(taskService.getLoggedUserTasks(principal, importance));
     }
 
     @PostMapping("/addtask")
