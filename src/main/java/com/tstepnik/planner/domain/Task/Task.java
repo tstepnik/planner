@@ -1,4 +1,7 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.Task;
+
+import com.tstepnik.planner.domain.User.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -15,10 +18,26 @@ public class Task {
     private boolean isDone;
     private boolean isArchived;
 
-    @ManyToOne
-   private User user;
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
 
-    public Task() {
+    @ManyToOne
+    private User user;
+
+    public Task(String description, boolean isDone, boolean isArchived, Importance importance) {
+        this.description = description;
+        this.isDone = isDone;
+        this.isArchived = isArchived;
+        this.importance = importance;
+    }
+    public Task(){}
+
+    public Importance getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Importance importance) {
+        this.importance = importance;
     }
 
     public User getUser() {

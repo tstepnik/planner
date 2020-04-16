@@ -1,6 +1,6 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.User.User;
 import com.tstepnik.planner.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

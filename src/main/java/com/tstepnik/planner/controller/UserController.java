@@ -1,5 +1,5 @@
 package com.tstepnik.planner.controller;
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.User.User;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +36,16 @@ public class UserController {
         return ResponseEntity.ok(user.get());
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id){
+         return ResponseEntity.ok(userService.getUser(id));
+
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
+    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") Long id) {
         Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
         if (updateUser.isEmpty()) {
 

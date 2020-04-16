@@ -1,6 +1,6 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.User.User;
 import com.tstepnik.planner.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,10 @@ public class UserService {
     public User getLoggedUser(Principal principal) {
         String login = principal.getName();
         return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
+    public User getUser(Long id){
+        return userRepository.findById(id).get();
     }
 
     public User updateUser(User user, long id) {

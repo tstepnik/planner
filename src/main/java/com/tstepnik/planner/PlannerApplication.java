@@ -1,11 +1,10 @@
 package com.tstepnik.planner;
 
-import com.tstepnik.planner.domain.Role;
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.User.Role;
+import com.tstepnik.planner.domain.User.User;
+import com.tstepnik.planner.domain.User.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.repository.UserRoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;

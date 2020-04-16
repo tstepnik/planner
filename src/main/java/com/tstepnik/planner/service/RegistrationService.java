@@ -1,7 +1,7 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.User.User;
+import com.tstepnik.planner.domain.User.UserRole;
 import com.tstepnik.planner.exceptions.EmailAlreadyUsedException;
 import com.tstepnik.planner.exceptions.UserAlreadyExistException;
 import com.tstepnik.planner.repository.UserRepository;
