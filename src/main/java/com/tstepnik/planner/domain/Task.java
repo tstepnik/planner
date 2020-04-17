@@ -1,4 +1,5 @@
 package com.tstepnik.planner.domain;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -16,7 +17,7 @@ public class Task {
     private boolean isArchived;
 
     @ManyToOne
-   private User user;
+    private User user;
 
     public Task() {
     }

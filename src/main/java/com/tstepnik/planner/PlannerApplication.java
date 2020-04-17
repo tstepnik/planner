@@ -22,7 +22,7 @@ public class PlannerApplication {
     private final PasswordEncoder passwordEncoder;
 
     public PlannerApplication(UserRoleRepository roleRepository, UserRepository userRepository,
-                              @Lazy PasswordEncoder passwordEncoder) {
+                               PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

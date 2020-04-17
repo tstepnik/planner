@@ -42,14 +42,14 @@ public class UserController {
     public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
         Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
         if (updateUser.isEmpty()) {
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
         }
         return ResponseEntity.ok(updateUser.get());
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
