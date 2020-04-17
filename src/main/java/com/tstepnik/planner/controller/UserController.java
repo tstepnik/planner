@@ -51,7 +51,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
 
