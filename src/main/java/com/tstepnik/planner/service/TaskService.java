@@ -6,10 +6,10 @@ import com.tstepnik.planner.domain.User.User;
 import com.tstepnik.planner.repository.TaskRepository;
 import com.tstepnik.planner.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,10 +35,10 @@ public class TaskService {
         return taskRepository.findAllByUser(loggedUser);
     }
 
-    public List<Task> getLoggedUserTasks(Principal principal,Importance importance) {
+    public List<Task> getLoggedUserTasks(Principal principal, Importance importance) {
         User loggedUser = userRepository.findByLogin(principal.getName()).orElseThrow(()
                 -> new EntityNotFoundException("User not found"));
-        return taskRepository.findAllByUserIdaAndImportance(loggedUser.getId(),importance);
+        return taskRepository.findAllByUserIdaAndImportance(loggedUser.getId(), importance);
     }
 
     public List<Task> getUserTasks(Long userId) {
@@ -49,8 +49,10 @@ public class TaskService {
         return taskRepository.findById(taskId).get();
     }
 
-    public Task addTask(Task task) {
+    public Task addTask(Task task, Principal principal) {
         task.setImportance(DEFAULT_IMPORTANCE);
+        task.setCreationDate(LocalDateTime.now());
+        task.setUser(userRepository.findByLogin(principal.getName()).get());
         return taskRepository.save(task);
     }
 
@@ -68,8 +70,8 @@ public class TaskService {
     }
 
 
-    public List<Task> getTaskByImportance(Importance importance){
-    return taskRepository.findAllByImportance(importance);
+    public List<Task> getTaskByImportance(Importance importance) {
+        return taskRepository.findAllByImportance(importance);
     }
 
 }

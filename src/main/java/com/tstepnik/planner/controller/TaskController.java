@@ -62,8 +62,8 @@ public class TaskController {
 
     @PostMapping("/addtask")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@RequestBody Task task) {
-        return ResponseEntity.ok(taskService.addTask(task));
+    public ResponseEntity<Task> addTask(@RequestBody Task task,Principal principal) {
+        return ResponseEntity.ok(taskService.addTask(task,principal));
     }
 
     @PutMapping("/{id}")

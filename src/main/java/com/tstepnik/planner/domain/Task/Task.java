@@ -4,6 +4,7 @@ import com.tstepnik.planner.domain.User.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 @Entity
 public class Task {
@@ -24,6 +25,10 @@ public class Task {
     @ManyToOne
     private User user;
 
+    private LocalDateTime creationDate;
+
+
+
     public Task(String description, boolean isDone, boolean isArchived, Importance importance) {
         this.description = description;
         this.isDone = isDone;
@@ -31,6 +36,14 @@ public class Task {
         this.importance = importance;
     }
     public Task(){}
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public Importance getImportance() {
         return importance;
