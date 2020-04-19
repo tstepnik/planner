@@ -17,6 +17,7 @@ public class Task {
     private String description;
 
     private boolean isDone;
+
     private boolean isArchived;
 
     @Enumerated(EnumType.STRING)
@@ -26,6 +27,7 @@ public class Task {
     private User user;
 
     private LocalDateTime creationDate;
+    private LocalDateTime expirationDate;
 
 
 
@@ -36,6 +38,14 @@ public class Task {
         this.importance = importance;
     }
     public Task(){}
+
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
     public LocalDateTime getCreationDate() {
         return creationDate;

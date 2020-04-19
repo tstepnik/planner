@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -55,15 +56,15 @@ public class TaskController {
 
     @GetMapping("/mytasks/{importance}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Task>> getLoggedUserTasks(Principal principal,
-                                                                     @PathVariable("importance") Importance importance) {
-        return ResponseEntity.ok(taskService.getLoggedUserTasks(principal, importance));
+    public ResponseEntity<List<Task>> getMyParticularTasks(Principal principal,
+                                                         @PathVariable("importance") Importance importance) {
+        return ResponseEntity.ok(taskService.getLoggedUserParticularTasks(principal, importance));
     }
 
     @PostMapping("/addtask")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@RequestBody Task task,Principal principal) {
-        return ResponseEntity.ok(taskService.addTask(task,principal));
+    public ResponseEntity<Task> addTask(@RequestBody Task task, Principal principal) {
+        return ResponseEntity.ok(taskService.addTask(task, principal));
     }
 
     @PutMapping("/{id}")
@@ -78,5 +79,18 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id) {
         taskService.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+
+    @GetMapping("/sumOfMyTasks")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Long> getNumberOfMyArchivedTasks(Principal principal){
+        Optional<Long> sumOfArchivedTasks = taskService.getSumOfArchivedTasksByLogin(principal);
+        if (sumOfArchivedTasks.isPresent()){
+            return ResponseEntity.ok(sumOfArchivedTasks.get());
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 }
