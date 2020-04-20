@@ -1,57 +1,70 @@
 package com.tstepnik.planner.controller;
-
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserDTO;
+import com.tstepnik.planner.domain.user.UserMapper;
 import com.tstepnik.planner.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper mapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    public ResponseEntity<List<UserDTO>> getUsers() {
+        List<User> users = userService.getUsers();
+
+        return ResponseEntity.ok(mapper.userToUserDTO(users));
     }
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> getLoggedUser(Principal principal) {
+    public ResponseEntity<UserDTO> getLoggedUser(Principal principal) {
         Optional<User> user = Optional.ofNullable(userService.getLoggedUser(principal));
         if (user.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(user.get());
+        return ResponseEntity.ok(mapper.userToUserDTO(user.get()));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
+        User user = userService.getUser(id);
+        return ResponseEntity.ok(mapper.userToUserDTO(user));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
+    public ResponseEntity<UserDTO> updatedUser(@RequestBody User user, @PathVariable("id") Long id) {
         Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
         if (updateUser.isEmpty()) {
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return ResponseEntity.ok(updateUser.get());
+        return ResponseEntity.ok(mapper.userToUserDTO(updateUser.get()));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-

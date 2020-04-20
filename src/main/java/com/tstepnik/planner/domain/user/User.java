@@ -1,8 +1,8 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "users")
@@ -27,13 +27,12 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 
-    public User() {
-    }
-
     public User(String userName, String password) {
         this.login = userName;
         this.password = password;
     }
+
+    public User(){}
 
     public Long getId() {
         return id;
@@ -47,8 +46,8 @@ public class User {
         return login;
     }
 
-    public void setLogin(String userName) {
-        this.login = userName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -89,37 +88,5 @@ public class User {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(login, user.login) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(roles, user.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, login, firstName, lastName, email, password, roles);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + login + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }

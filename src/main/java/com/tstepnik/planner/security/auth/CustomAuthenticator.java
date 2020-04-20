@@ -1,7 +1,7 @@
 package com.tstepnik.planner.security.auth;
 
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 

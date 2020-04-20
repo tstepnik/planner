@@ -1,8 +1,9 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserDTO;
+import com.tstepnik.planner.domain.user.UserMapper;
 import com.tstepnik.planner.service.RegistrationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +18,20 @@ import java.util.Optional;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final UserMapper mapper;
 
-    @Autowired
-    public RegistrationController(RegistrationService registrationService) {
+    public RegistrationController(RegistrationService registrationService, UserMapper mapper) {
         this.registrationService = registrationService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody User user) {
         Optional<User> registerUser = Optional.ofNullable(registrationService.register(user));
         if (registerUser.isEmpty()) {
             //TODO remove it once you add exception handler.
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(registerUser.get(), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.userToUserDTO(registerUser.get()), HttpStatus.CREATED);
     }
 }

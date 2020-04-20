@@ -1,14 +1,12 @@
 package com.tstepnik.planner;
 
-import com.tstepnik.planner.domain.Role;
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.Role;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.repository.UserRoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;

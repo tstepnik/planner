@@ -1,8 +1,11 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
+
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class UserRole {
 
     @Id
@@ -12,11 +15,10 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public UserRole(){}
-
-    public UserRole(Role role ){
-        this.role=role;
-    }
+   public UserRole(Role role){
+       this.role=role;
+   }
+   public UserRole(){}
 
     public Long getId() {
         return id;
@@ -32,13 +34,5 @@ public class UserRole {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return "UserRole{" +
-                "id=" + id +
-                ", role=" + role +
-                '}';
     }
 }
