@@ -2,7 +2,10 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.Task.Importance;
 import com.tstepnik.planner.domain.Task.Task;
+import com.tstepnik.planner.domain.Task.TaskDTO;
+import com.tstepnik.planner.domain.Task.TaskMapper;
 import com.tstepnik.planner.service.TaskService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,24 +17,25 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
+@AllArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
-
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
+    private final TaskMapper mapper;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Task>> getTasks() {
-        return ResponseEntity.ok(taskService.getTasks());
+    public ResponseEntity<List<TaskDTO>> getTasks()
+    {
+        List<Task> tasks = taskService.getTasks();
+        return ResponseEntity.ok(mapper.taskToTaskDTO(tasks));
     }
 
     @GetMapping("/{id}/usertasks")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Task>> getAllUserTasks(@PathVariable("id") Long userId) {
-        return ResponseEntity.ok(taskService.getUserTasks(userId));
+    public ResponseEntity<List<TaskDTO>> getAllUserTasks(@PathVariable("id") Long userId) {
+        List<Task> tasks = taskService.getUserTasks(userId);
+        return ResponseEntity.ok(mapper.taskToTaskDTO(tasks));
     }
 
     @GetMapping("/{importance}")
@@ -50,8 +54,9 @@ public class TaskController {
 
     @GetMapping("/mytasks")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Task>> getAllLoggedUserTasks(Principal principal) {
-        return ResponseEntity.ok(taskService.getAllLoggedUserTasks(principal));
+    public ResponseEntity<List<TaskDTO>> getAllLoggedUserTasks(Principal principal) {
+        List<Task> tasks = taskService.getAllLoggedUserTasks(principal);
+        return ResponseEntity.ok(mapper.taskToTaskDTO(tasks));
     }
 
     @GetMapping("/mytasks/{importance}")
@@ -63,22 +68,23 @@ public class TaskController {
 
     @PostMapping("/addtask")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@RequestBody Task task, Principal principal) {
-        return ResponseEntity.ok(taskService.addTask(task, principal));
+    public ResponseEntity<TaskDTO> addTask(@RequestBody Task userTask, Principal principal) {
+        Task task = taskService.addTask(userTask, principal);
+        return ResponseEntity.ok(mapper.taskToTaskDTO(task));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task, @PathVariable("id") Long id) {
+    public ResponseEntity<TaskDTO> updateTask(@RequestBody Task task, @PathVariable("id") Long id) {
         Task updatedTask = taskService.updateTask(task, id);
-        return ResponseEntity.ok(updatedTask);
+        return ResponseEntity.ok(mapper.taskToTaskDTO(updatedTask));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id) {
         taskService.deleteTask(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -48,8 +48,7 @@ public class UserController {
     public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") Long id) {
         Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
         if (updateUser.isEmpty()) {
-
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return ResponseEntity.ok(updateUser.get());
     }
@@ -58,6 +57,6 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
