@@ -15,6 +15,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByUser(User user);
 
+    List<Task> findAllByUserOrderByImportance(User user);
+
     @Query("SELECT t FROM Task t WHERE t.user.id=?1")
     List<Task> findALLByUserId(Long id);
 

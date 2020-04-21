@@ -1,4 +1,5 @@
 package com.tstepnik.planner.controller;
+
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.domain.user.UserDTO;
 import com.tstepnik.planner.domain.user.UserMapper;
@@ -14,17 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final UserMapper mapper;
-
-    public UserController(UserService userService, UserMapper mapper) {
-        this.userService = userService;
-        this.mapper = mapper;
-    }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -46,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id) {
         User user = userService.getUser(id);
         return ResponseEntity.ok(mapper.userToUserDTO(user));
     }

@@ -1,6 +1,7 @@
 package com.tstepnik.planner.domain.user;
 
 import org.mapstruct.Mapper;
+
 import java.util.List;
 
 
@@ -8,6 +9,7 @@ import java.util.List;
 public interface UserMapper {
 
     UserDTO userToUserDTO(User user);
+
     List<UserDTO> userToUserDTO(List<User> users);
 
 }

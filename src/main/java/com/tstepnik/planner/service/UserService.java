@@ -30,7 +30,7 @@ public class UserService {
         return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
-    public User getUser(Long id){
+    public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
 
@@ -47,5 +47,4 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
 }

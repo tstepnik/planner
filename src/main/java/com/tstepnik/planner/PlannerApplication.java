@@ -5,6 +5,7 @@ import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.repository.UserRoleRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,19 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
+@AllArgsConstructor
 @SpringBootApplication
 public class PlannerApplication {
 
     private final UserRoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public PlannerApplication(UserRoleRepository roleRepository, UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(PlannerApplication.class, args);

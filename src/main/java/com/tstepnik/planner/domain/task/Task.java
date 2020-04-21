@@ -1,4 +1,5 @@
 package com.tstepnik.planner.domain.task;
+
 import com.tstepnik.planner.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -17,16 +17,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
-
+@AllArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
     private final TaskMapper mapper;
-
-    public TaskController(TaskService taskService, TaskMapper mapper) {
-        this.taskService = taskService;
-        this.mapper = mapper;
-    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,8 +53,8 @@ public class TaskController {
 
     @GetMapping("/mytasks")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<TaskDTO>> getAllLoggedUserTasks(Principal principal) {
-        List<Task> tasks = taskService.getAllLoggedUserTasks(principal);
+    public ResponseEntity<List<TaskDTO>> getAllLoggedUserTasksOrderByImportance(Principal principal) {
+        List<Task> tasks = taskService.getAllLoggedUserTasksOrderByImportance(principal);
         return ResponseEntity.ok(mapper.taskToTaskDTO(tasks));
     }
 

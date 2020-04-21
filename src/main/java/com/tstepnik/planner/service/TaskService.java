@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,6 +38,13 @@ public class TaskService {
                 -> new EntityNotFoundException("User not found"));
         archiveTasks();
         return taskRepository.findAllByUser(loggedUser);
+    }
+
+    public List<Task> getAllLoggedUserTasksOrderByImportance(Principal principal) {
+        User loggedUser = userRepository.findByLogin(principal.getName()).orElseThrow(()
+                -> new EntityNotFoundException("User not found"));
+        archiveTasks();
+        return taskRepository.findAllByUserOrderByImportance(loggedUser);
     }
 
     public List<Task> getLoggedUserParticularTasks(Principal principal, Importance importance) {
@@ -101,12 +107,12 @@ public class TaskService {
         });
     }
 
-    public Optional<Long> getSumOfArchivedTasksById(Long userId){
+    public Optional<Long> getSumOfArchivedTasksById(Long userId) {
         Optional<Long> sumOfTasks = taskRepository.countAllArchivedTaskByUserId(userId);
         return sumOfTasks;
     }
 
-    public Optional<Long> getSumOfArchivedTasksByLogin(Principal principal){
+    public Optional<Long> getSumOfArchivedTasksByLogin(Principal principal) {
         Optional<Long> sumOfTasks = taskRepository.countAllArchivedTaskByLogin(principal.getName());
         return sumOfTasks;
     }

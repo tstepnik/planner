@@ -1,6 +1,7 @@
 package com.tstepnik.planner.security;
 
 import com.tstepnik.planner.security.auth.CustomAuthenticator;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,13 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthenticator customAuthenticator;
-
-    public SecurityConfig(CustomAuthenticator customAuthenticator) {
-        this.customAuthenticator = customAuthenticator;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
