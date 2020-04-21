@@ -1,11 +1,15 @@
 package com.tstepnik.planner.domain.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
+@NoArgsConstructor
 public class UserRole {
 
     @Id
@@ -18,21 +22,7 @@ public class UserRole {
    public UserRole(Role role){
        this.role=role;
    }
-   public UserRole(){}
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

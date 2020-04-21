@@ -44,7 +44,7 @@ public class TaskController {
 
     @GetMapping("/{importance}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Task>> getUserTasks(@PathVariable("importance") Importance importance) {
+    public ResponseEntity<List<Task>> geTasksByImportance(@PathVariable("importance") Importance importance) {
         return ResponseEntity.ok(taskService.getTaskByImportance(importance));
     }
 
