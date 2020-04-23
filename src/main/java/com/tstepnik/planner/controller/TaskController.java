@@ -1,16 +1,13 @@
 package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.Task;
-import com.tstepnik.planner.exceptions.EmptyTaskException;
 import com.tstepnik.planner.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -40,10 +37,7 @@ public class TaskController {
 
     @PostMapping("/addtask")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@RequestBody Task userTask, Principal principal, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new EmptyTaskException("task is empty");
-        }
+    public ResponseEntity<Task> addTask(@RequestBody Task userTask, Principal principal) {
         Task task = taskService.addTask(userTask, principal);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
@@ -60,6 +54,6 @@ public class TaskController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteTask(@RequestParam Long id, Principal principal) {
         taskService.deleteTask(id, principal);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
