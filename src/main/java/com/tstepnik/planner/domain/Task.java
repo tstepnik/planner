@@ -4,17 +4,21 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
+
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Your Task cannot be Empty, please add description.")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
+
     private boolean isDone;
-    private boolean isArchived;
+
 
     @ManyToOne
     private User user;
@@ -54,12 +58,12 @@ public class Task {
         isDone = done;
     }
 
-    public boolean isArchived() {
-        return isArchived;
+    public Importance getImportance() {
+        return importance;
     }
 
-    public void setArchived(boolean archived) {
-        isArchived = archived;
+    public void setImportance(Importance importance) {
+        this.importance = importance;
     }
 
     @Override
@@ -68,7 +72,6 @@ public class Task {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", isDone=" + isDone +
-                ", isArchived=" + isArchived +
                 '}';
     }
 }
