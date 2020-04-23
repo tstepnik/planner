@@ -18,5 +18,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findUserTask(Long id,String login);
 
     @Query("DELETE FROM Task t WHERE t.id=?1 AND t.user.login=?2")
-    void deleteYourTask(Long id, String login);
+    void deleteUserTask(Long id, String login);
 }

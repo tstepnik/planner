@@ -5,15 +5,14 @@ import com.tstepnik.planner.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@Validated
 public class TaskController {
 
     private final TaskService taskService;
@@ -23,7 +22,7 @@ public class TaskController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Task>> tasks() {
         return ResponseEntity.ok(taskService.getTasks());
     }
@@ -35,16 +34,16 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @PostMapping("/addtask")
+    @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@RequestBody Task userTask, Principal principal) {
+    public ResponseEntity<Task> addTask(@Valid @RequestBody Task userTask, Principal principal) {
         Task task = taskService.addTask(userTask, principal);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task,
+    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task,
                                            @RequestParam Long id, Principal principal) {
         Task updatedTask = taskService.updateTask(task, id, principal);
         return ResponseEntity.ok(updatedTask);

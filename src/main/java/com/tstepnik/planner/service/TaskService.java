@@ -47,7 +47,7 @@ public class TaskService {
     }
 
     public void deleteTask(Long id, Principal principal) {
-        taskRepository.deleteYourTask(id, principal.getName());
+        taskRepository.deleteUserTask(id, principal.getName());
     }
 
     public List<Task> userTasks(Principal principal) {
