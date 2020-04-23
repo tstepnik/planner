@@ -37,7 +37,7 @@ public class TaskService {
     public Task updateTask(Task task, Long id, Principal principal) {
         Optional<Task> userTask = taskRepository.findUserTask(id, principal.getName());
         if (userTask.isEmpty()) {
-            throw new UserNotFoundException("There is not such user.");
+            return taskRepository.save(task);
         }
         Task updatedTask = userTask.get();
         updatedTask.setImportance(task.getImportance());
