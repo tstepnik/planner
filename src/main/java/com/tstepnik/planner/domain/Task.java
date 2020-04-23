@@ -1,7 +1,6 @@
 package com.tstepnik.planner.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 
@@ -11,7 +10,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Your Task cannot be Empty, please add description.")
+
     private String description;
 
     @Enumerated(EnumType.STRING)

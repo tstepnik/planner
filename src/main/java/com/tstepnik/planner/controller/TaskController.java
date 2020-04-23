@@ -40,7 +40,7 @@ public class TaskController {
 
     @PostMapping("/addtask")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@Valid @RequestBody Task userTask, Principal principal, BindingResult result) {
+    public ResponseEntity<Task> addTask(@RequestBody Task userTask, Principal principal, BindingResult result) {
         if (result.hasErrors()) {
             throw new EmptyTaskException("task is empty");
         }
@@ -50,7 +50,7 @@ public class TaskController {
 
     @PutMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task,
+    public ResponseEntity<Task> updateTask(@RequestBody Task task,
                                            @RequestParam Long id, Principal principal) {
         Task updatedTask = taskService.updateTask(task, id, principal);
         return ResponseEntity.ok(updatedTask);
