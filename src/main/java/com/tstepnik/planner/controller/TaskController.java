@@ -37,15 +37,14 @@ public class TaskController {
 
     @PostMapping("/{id}/tasks/add")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@Valid @RequestBody Task userTask, Long userId) {
+    public ResponseEntity<Task> addTask(@Valid @RequestBody Task userTask,@PathVariable("id") Long userId) {
         Task task = taskService.addTask(userTask, userId);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PutMapping("/tasks/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId,
-                                           Principal principal) {
+    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId) {
         Task checkedTask = taskService.getTask(taskId).get();
         if (checkedTask.getUser().equals(task.getUser())) {
             Task updatedTask = taskService.updateTask(task, taskId);
