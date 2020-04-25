@@ -24,18 +24,21 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public List<Task> getTasks() {
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
+    public Optional<Task> getTask(Long id){
+        return taskRepository.findById(id);
+    }
 
-    public Task addTask(Task task, Principal principal) {
+    public Task addTask(Task task, Long userId) {
         task.setImportance(DEFAULT_IMPORTANCE);
-        task.setUser(userRepository.findByLogin(principal.getName()).get());
+        task.setUser(userRepository.findById(userId).get());
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Task task, Long id, Principal principal) {
-        Optional<Task> userTask = taskRepository.findUserTask(id, principal.getName());
+    public Task updateTask(Task task, Long id) {
+        Optional<Task> userTask = taskRepository.findById(id);
         if (userTask.isEmpty()) {
             return taskRepository.save(task);
         }
@@ -50,7 +53,7 @@ public class TaskService {
         taskRepository.deleteUserTask(id, principal.getName());
     }
 
-    public List<Task> userTasks(Principal principal) {
-        return taskRepository.findAllByLogin(principal.getName());
+    public List<Task> userTasks(Long userId) {
+        return taskRepository.findAllByUserId(userId);
     }
 }
