@@ -61,7 +61,7 @@ public class TaskController {
         String checkedLogin = checkedTask.getUser().getLogin();
         String userLogin = principal.getName();
         if (checkedLogin.equals(userLogin)) {
-            taskService.deleteTask(taskId, principal);
+            taskService.deleteTask(taskId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
