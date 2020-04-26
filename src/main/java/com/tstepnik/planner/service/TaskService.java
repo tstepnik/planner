@@ -2,12 +2,9 @@ package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.Importance;
 import com.tstepnik.planner.domain.Task;
-import com.tstepnik.planner.exceptions.UserNotFoundException;
 import com.tstepnik.planner.repository.TaskRepository;
-import com.tstepnik.planner.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +14,9 @@ public class TaskService {
     private final Importance DEFAULT_IMPORTANCE = Importance.INCIDENTAL;
 
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
 
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
     }
 
     public List<Task> findAll() {
@@ -33,7 +28,7 @@ public class TaskService {
 
     public Task addTask(Task task, Long userId) {
         task.setImportance(DEFAULT_IMPORTANCE);
-        task.setUser(userRepository.findById(userId).get());
+        task.setUserId(userId);
         return taskRepository.save(task);
     }
 
