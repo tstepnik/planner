@@ -1,6 +1,6 @@
 package com.tstepnik.planner.security;
 
-import com.tstepnik.planner.security.auth.CustomAuthenticator;
+import com.tstepnik.planner.security.auth.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,16 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomAuthenticator customAuthenticator;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public SecurityConfig(CustomAuthenticator customAuthenticator) {
-        this.customAuthenticator = customAuthenticator;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        return passwordEncoder;
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -35,8 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/api").permitAll()
                 .antMatchers("/api/register").permitAll()
-                //TODO everybody now has access to database, change it later
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll() //TODO everybody now has access to database, change it later
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -48,6 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticator);
+        auth.userDetailsService(customUserDetailsService);
     }
 }
