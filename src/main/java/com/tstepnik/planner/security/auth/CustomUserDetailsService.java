@@ -1,48 +1,39 @@
 package com.tstepnik.planner.security.auth;
 
-import com.tstepnik.planner.domain.CustomUserDetail;
-import com.tstepnik.planner.domain.Role;
 import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Service
-public class MyUserDetailsService implements UserDetailsService {
+@Component
+public class CustomUserDetailsService implements UserDetailsService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-
-    public MyUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+      User user = userRepository.findByLogin(username)
+              .orElseThrow(() -> new UsernameNotFoundException("Bad credentials"));
+      return toUserDetails(user);
+    }
 
-    public CustomUserDetail loadUserByUsername(String name) throws UsernameNotFoundException, DataAccessException {
-        // returns the get(0) of the user list obtained from the db
-        User domainUser = userRepository.findByLogin(name).get();
+    private UserDetails toUserDetails (User user){
+        return new CustomUserDetails(user.getLogin(),user.getPassword(),getAuthorities(user),user);
+    }
 
-
-        Set<UserRole> roles = domainUser.getRoles();
-
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        for(UserRole role: roles){
-            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
-        }
-
-        CustomUserDetail customUserDetail=new CustomUserDetail();
-        customUserDetail.setUser(domainUser);
-        customUserDetail.setAuthorities(authorities);
-
-        return customUserDetail;
-
+    private List<GrantedAuthority> getAuthorities(User user){
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().
+                toString())).collect(Collectors.toList());
     }
 }

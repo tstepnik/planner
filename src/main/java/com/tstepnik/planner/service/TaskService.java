@@ -3,8 +3,11 @@ package com.tstepnik.planner.service;
 import com.tstepnik.planner.domain.Importance;
 import com.tstepnik.planner.domain.Task;
 import com.tstepnik.planner.repository.TaskRepository;
+import com.tstepnik.planner.security.auth.CustomUserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,5 +53,11 @@ public class TaskService {
 
     public List<Task> userTasks(Long userId) {
         return taskRepository.findAllByUserId(userId);
+    }
+
+    public Long userId(Principal principal){
+        CustomUserDetails customUserDetails =
+                (CustomUserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        return customUserDetails.getUser().getId();
     }
 }
