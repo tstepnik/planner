@@ -5,9 +5,9 @@ import com.tstepnik.planner.domain.Task;
 import com.tstepnik.planner.domain.User;
 import com.tstepnik.planner.exceptions.TaskNotFoundException;
 import com.tstepnik.planner.repository.TaskRepository;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> findById(Long id) {
+    public Optional<Task> findTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
@@ -49,29 +49,23 @@ public class TaskService {
     }
 
     public Task updateTask(Task task, Long taskId) {
-
         User user = authService.getLoggedUser();
-        Optional<Task> checkedTask = findById(taskId);
+        Optional<Task> checkedTask = findTaskById(taskId);
         if (checkedTask.isEmpty()) {
             return taskRepository.save(task);
+        } else if (checkedTask.get().getUserId().equals(user.getId())) {
+            Task updatedTask = checkedTask.get();
+            updatedTask.setImportance(task.getImportance());
+            updatedTask.setDescription(task.getDescription());
+            updatedTask.setDone(task.isDone());
+            return taskRepository.save(updatedTask);
         }
-        Task updatedTask = checkedTask.get();
-        if (!updatedTask.getUserId().equals(user.getId())) {
-            try {
-                throw new AccessDeniedException("This task doesn't belongs to User");
-            } catch (AccessDeniedException e) {
-                e.getMessage();
-            }
-        }
-        updatedTask.setImportance(task.getImportance());
-        updatedTask.setDescription(task.getDescription());
-        updatedTask.setDone(task.isDone());
-        return taskRepository.save(updatedTask);
+        throw new AccessDeniedException("This task doesn't belongs to User");
     }
 
     public void deleteTask(Long taskId) {
         User user = authService.getLoggedUser();
-        Optional<Task> task = findById(taskId);
+        Optional<Task> task = findTaskById(taskId);
         if (task.isPresent()) {
             if (task.get().getUserId().equals(user.getId())) {
                 taskRepository.deleteById(taskId);
