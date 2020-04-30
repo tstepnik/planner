@@ -2,62 +2,88 @@ package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.Importance;
 import com.tstepnik.planner.domain.Task;
+import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.exceptions.TaskNotFoundException;
 import com.tstepnik.planner.repository.TaskRepository;
-import com.tstepnik.planner.security.auth.CustomUserDetails;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskService {
 
-    private final Importance DEFAULT_IMPORTANCE = Importance.INCIDENTAL;
+    private final Importance DEFAULT_IMPORTANCE = Importance.MINOR;
 
     private final TaskRepository taskRepository;
+    private final AuthService authService;
+//TODO here add whole logic with if and exception and use loggedUser here!
 
-    public TaskService(TaskRepository taskRepository) {
+
+    public TaskService(TaskRepository taskRepository, AuthService authService) {
         this.taskRepository = taskRepository;
+        this.authService = authService;
     }
 
     public List<Task> findAll() {
         return taskRepository.findAll();
     }
-    public Optional<Task> getTask(Long id){
+
+    public Optional<Task> findById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public Task addTask(Task task, Long userId) {
-        task.setImportance(DEFAULT_IMPORTANCE);
-        task.setUserId(userId);
+    public List<Task> getUserTasks() {
+        User user = authService.getLoggedUser();
+        return taskRepository.findAllByUserId(user.getId());
+    }
+
+    public Task addTask(Task task) {
+        User user = authService.getLoggedUser();
+        if (task.getImportance() == null) {
+            task.setImportance(DEFAULT_IMPORTANCE);
+        }
+        task.setUserId(user.getId());
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Task task, Long id) {
-        Optional<Task> userTask = taskRepository.findById(id);
-        if (userTask.isEmpty()) {
+    public Task updateTask(Task task, Long taskId) {
+
+        User user = authService.getLoggedUser();
+        Optional<Task> checkedTask = findById(taskId);
+        if (checkedTask.isEmpty()) {
             return taskRepository.save(task);
         }
-        Task updatedTask = userTask.get();
+        Task updatedTask = checkedTask.get();
+        if (!updatedTask.getUserId().equals(user.getId())) {
+            try {
+                throw new AccessDeniedException("This task doesn't belongs to User");
+            } catch (AccessDeniedException e) {
+                e.getMessage();
+            }
+        }
         updatedTask.setImportance(task.getImportance());
         updatedTask.setDescription(task.getDescription());
         updatedTask.setDone(task.isDone());
         return taskRepository.save(updatedTask);
     }
 
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
-    }
-
-    public List<Task> userTasks(Long userId) {
-        return taskRepository.findAllByUserId(userId);
-    }
-
-    public Long userId(Principal principal){
-        CustomUserDetails customUserDetails =
-                (CustomUserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        return customUserDetails.getUser().getId();
+    public void deleteTask(Long taskId) {
+        User user = authService.getLoggedUser();
+        Optional<Task> task = findById(taskId);
+        if (task.isPresent()) {
+            if (task.get().getUserId().equals(user.getId())) {
+                taskRepository.deleteById(taskId);
+            } else {
+                try {
+                    throw new AccessDeniedException("This task doesn't belongs to User");
+                } catch (AccessDeniedException e) {
+                    e.getMessage();
+                }
+            }
+        } else {
+            throw new TaskNotFoundException("There is not such task.You try delete empty task.");
+        }
     }
 }

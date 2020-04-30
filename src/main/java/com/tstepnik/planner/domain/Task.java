@@ -18,8 +18,6 @@ public class Task {
 
     private boolean isDone;
 
-
-    @JoinColumn(name = "USER_ID")
     private Long userId;
 
     public Task() {
