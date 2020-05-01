@@ -38,7 +38,13 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @PostMapping("/add")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTask(@PathVariable("id") @RequestParam Long id) {
+        return ResponseEntity.ok(taskService.getTask(id));
+    }
+
+    @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
         Task userTask = taskService.addTask(task);
@@ -47,7 +53,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId) {
+    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") @RequestParam Long taskId) {
         Task updatedTask = taskService.updateTask(task, taskId);
         return ResponseEntity.ok(updatedTask);
     }

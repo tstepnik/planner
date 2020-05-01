@@ -1,15 +1,11 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.Importance;
-import com.tstepnik.planner.domain.Task;
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.exceptions.TaskNotFoundException;
+import com.tstepnik.planner.domain.*;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -18,8 +14,6 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final AuthService authService;
-//TODO here add whole logic with if and exception and use loggedUser here!
-
 
     public TaskService(TaskRepository taskRepository, AuthService authService) {
         this.taskRepository = taskRepository;
@@ -30,8 +24,14 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> findTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Task getTask(Long taskId) {
+        User user = authService.getLoggedUser();
+        Task task = taskRepository.getById(taskId);
+        if (!task.getUserId().equals(user.getId())) {
+            throw new AccessDeniedException("This task doesn't belongs to User");
+        } else {
+            return task;
+        }
     }
 
     public List<Task> getUserTasks() {
@@ -50,34 +50,24 @@ public class TaskService {
 
     public Task updateTask(Task task, Long taskId) {
         User user = authService.getLoggedUser();
-        Optional<Task> checkedTask = findTaskById(taskId);
-        if (checkedTask.isEmpty()) {
-            return taskRepository.save(task);
-        } else if (checkedTask.get().getUserId().equals(user.getId())) {
-            Task updatedTask = checkedTask.get();
-            updatedTask.setImportance(task.getImportance());
-            updatedTask.setDescription(task.getDescription());
-            updatedTask.setDone(task.isDone());
-            return taskRepository.save(updatedTask);
+        Task checkedTask = taskRepository.getById(taskId);
+        if (!checkedTask.getUserId().equals(user.getId())) {
+            throw new AccessDeniedException("This task doesn't belongs to User");
+        } else {
+            checkedTask.setImportance(task.getImportance());
+            checkedTask.setDescription(task.getDescription());
+            checkedTask.setDone(task.isDone());
+            return taskRepository.save(checkedTask);
         }
-        throw new AccessDeniedException("This task doesn't belongs to User");
     }
 
     public void deleteTask(Long taskId) {
         User user = authService.getLoggedUser();
-        Optional<Task> task = findTaskById(taskId);
-        if (task.isPresent()) {
-            if (task.get().getUserId().equals(user.getId())) {
-                taskRepository.deleteById(taskId);
-            } else {
-                try {
-                    throw new AccessDeniedException("This task doesn't belongs to User");
-                } catch (AccessDeniedException e) {
-                    e.getMessage();
-                }
-            }
+        Task task = taskRepository.getById(taskId);
+        if (!task.getUserId().equals(user.getId())) {
+            throw new AccessDeniedException("This task doesn't belongs to User");
         } else {
-            throw new TaskNotFoundException("There is not such task.You try delete empty task.");
+            taskRepository.deleteById(taskId);
         }
     }
 }
