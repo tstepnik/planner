@@ -26,9 +26,9 @@ public class TaskService {
 
     public Task getTask(Long taskId) {
         User user = authService.getLoggedUser();
-        Task task = taskRepository.getById(taskId);
+        Task task = taskRepository.getOne(taskId);
         if (!task.getUserId().equals(user.getId())) {
-            throw new AccessDeniedException("This task doesn't belongs to User");
+            throw new AccessDeniedException("Task with id " + taskId + " doesn't belong to user with id " + user.getId());
         } else {
             return task;
         }
@@ -50,9 +50,9 @@ public class TaskService {
 
     public Task updateTask(Task task, Long taskId) {
         User user = authService.getLoggedUser();
-        Task checkedTask = taskRepository.getById(taskId);
+        Task checkedTask = taskRepository.getOne(taskId);
         if (!checkedTask.getUserId().equals(user.getId())) {
-            throw new AccessDeniedException("This task doesn't belongs to User");
+            throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
@@ -63,9 +63,9 @@ public class TaskService {
 
     public void deleteTask(Long taskId) {
         User user = authService.getLoggedUser();
-        Task task = taskRepository.getById(taskId);
+        Task task = taskRepository.getOne(taskId);
         if (!task.getUserId().equals(user.getId())) {
-            throw new AccessDeniedException("This task doesn't belongs to User");
+            throw new AccessDeniedException("User with login " + user.getId() + " cannot delete task with id " + taskId);
         } else {
             taskRepository.deleteById(taskId);
         }

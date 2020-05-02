@@ -40,7 +40,7 @@ public class TaskController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable("id") @RequestParam Long id) {
+    public ResponseEntity<Task> getTask(@PathVariable("id") Long id) {
         return ResponseEntity.ok(taskService.getTask(id));
     }
 
@@ -53,16 +53,15 @@ public class TaskController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") @RequestParam Long taskId) {
+    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId) {
         Task updatedTask = taskService.updateTask(task, taskId);
         return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Void> deleteTask(@PathVariable("id") @RequestParam Long taskId) {
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") Long taskId) {
         taskService.deleteTask(taskId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
