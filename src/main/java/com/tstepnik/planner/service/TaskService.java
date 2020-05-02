@@ -36,7 +36,7 @@ public class TaskService {
 
     public List<Task> getUserTasks() {
         User user = authService.getLoggedUser();
-        return taskRepository.findAllByUserId(user.getId());
+        return taskRepository.getAllByUserId(user.getId());
     }
 
     public Task addTask(Task task) {
