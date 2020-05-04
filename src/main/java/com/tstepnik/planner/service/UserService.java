@@ -25,13 +25,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    //TODO change logic, don;t use database for logged user
     public User getLoggedUser(Principal principal) {
         String login = principal.getName();
         return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     public User updateUser(User user, long id) {
-        Optional<User> currentUser = userRepository.findById(id);
+        Optional<User> currentUser = userRepository.findById(id);//TODO change logic, example: .orElseTrow...
         currentUser.get().setPassword(user.getPassword());
         currentUser.get().setEmail(user.getEmail());
         currentUser.get().setFirstName(user.getFirstName());

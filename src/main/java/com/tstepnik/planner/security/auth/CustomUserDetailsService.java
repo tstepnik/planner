@@ -23,15 +23,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("Bad credentials"));
-        return toUserDetails(user);
+      User user = userRepository.findByLogin(username)
+              .orElseThrow(() -> new UsernameNotFoundException("Bad credentials"));
+      return toUserDetails(user);
     }
 
-    private UserDetails toUserDetails(User user) {
-        return new CustomUserDetails(user.getLogin(), user.getPassword(), getAuthorities(user), user);
+    private UserDetails toUserDetails (User user){
+        return new CustomUserDetails(user.getLogin(),user.getPassword(),getAuthorities(user),user);
     }
 
-    private List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().toString())).collect(Collectors.toList());
+    private List<GrantedAuthority> getAuthorities(User user){
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().
+                toString())).collect(Collectors.toList());
     }
 }

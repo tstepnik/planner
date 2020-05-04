@@ -9,7 +9,8 @@ public class CustomUserDetails extends User {
 
     private com.tstepnik.planner.domain.User user;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, com.tstepnik.planner.domain.User user) {
+    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
+                             com.tstepnik.planner.domain.User user) {
         super(username, password, authorities);
         this.user = user;
     }
@@ -18,7 +19,9 @@ public class CustomUserDetails extends User {
         super(username, password, authorities);
     }
 
-    public CustomUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
+                             boolean credentialsNonExpired, boolean accountNonLocked,
+                             Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 

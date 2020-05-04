@@ -13,21 +13,22 @@ public class Task {
     @NotEmpty
     private String description;
 
-    private boolean isDone;
-    private boolean isArchived;
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
 
-    @ManyToOne
-    private User user;
+    private boolean isDone;
+
+    private Long userId;
 
     public Task() {
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -54,21 +55,11 @@ public class Task {
         isDone = done;
     }
 
-    public boolean isArchived() {
-        return isArchived;
+    public Importance getImportance() {
+        return importance;
     }
 
-    public void setArchived(boolean archived) {
-        isArchived = archived;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", isDone=" + isDone +
-                ", isArchived=" + isArchived +
-                '}';
+    public void setImportance(Importance importance) {
+        this.importance = importance;
     }
 }
