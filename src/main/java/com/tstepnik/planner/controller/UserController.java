@@ -1,6 +1,8 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserDto;
+import com.tstepnik.planner.domain.user.UserMapper;
 import com.tstepnik.planner.security.auth.CustomUserDetails;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -17,32 +19,37 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper mapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<User> users = userService.getUsers();
+        return ResponseEntity.ok(mapper.toDto(users));
+
     }
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> getLoggedUser(Principal principal) {
+    public ResponseEntity<UserDto> getLoggedUser(Principal principal) {
         CustomUserDetails customUserDetails = (CustomUserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        return ResponseEntity.ok(customUserDetails.getUser());
+        User user = customUserDetails.getUser();
+        return ResponseEntity.ok(mapper.toDto(user));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
-        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
+    public ResponseEntity<UserDto> updatedUser(@RequestBody UserDto user, @PathVariable("id") long id) {
+        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(mapper.toUser(user), id));
         if (updateUser.isEmpty()) {
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
+            return new ResponseEntity<UserDto>(mapper.toDto(updateUser.get()), HttpStatus.CONFLICT);
         }
-        return ResponseEntity.ok(updateUser.get());
+        return ResponseEntity.ok(mapper.toDto(updateUser.get()));
     }
 
     @DeleteMapping("/{id}")

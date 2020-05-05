@@ -1,17 +1,8 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user.userregistrationdto;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
-@Entity(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class RegisterUserDto {
 
     @NotEmpty
     private String login;
@@ -25,31 +16,12 @@ public class User {
     @NotEmpty
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
-
-    public User() {
-    }
-
-    public User(String userName, String password) {
-        this.login = userName;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(String userName) {
-        this.login = userName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -83,13 +55,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.task;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

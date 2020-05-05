@@ -1,6 +1,8 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.Task;
+import com.tstepnik.planner.domain.task.Task;
+import com.tstepnik.planner.domain.task.TaskDto;
+import com.tstepnik.planner.domain.task.TaskMapper;
 import com.tstepnik.planner.service.TaskService;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -18,44 +20,48 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserService userService;
+    private final TaskMapper mapper;
 
-    public TaskController(TaskService taskService, UserService userService) {
+    public TaskController(TaskService taskService, UserService userService, TaskMapper mapper) {
         this.taskService = taskService;
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<Task>> getTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+    public ResponseEntity<List<TaskDto>> getTasks() {
+        List<Task> tasks = taskService.findAll();
+        return ResponseEntity.ok(mapper.toDto(tasks));
     }
 
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/mine")
-    public ResponseEntity<List<Task>> getUserTasks() {
+    public ResponseEntity<List<TaskDto>> getUserTasks() {
         List<Task> tasks = taskService.getUserTasks();
-        return ResponseEntity.ok(tasks);
+        return ResponseEntity.ok(mapper.toDto(tasks));
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(taskService.getTask(id));
+    public ResponseEntity<TaskDto> getTask(@PathVariable("id") Long id) {
+        Task task = taskService.getTask(id);
+        return ResponseEntity.ok(mapper.toDto(task));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
-        Task userTask = taskService.addTask(task);
-        return new ResponseEntity<>(userTask, HttpStatus.CREATED);
+    public ResponseEntity<TaskDto> addTask(@Valid @RequestBody TaskDto task) {
+         taskService.addTask(mapper.toTask(task));
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId) {
-        Task updatedTask = taskService.updateTask(task, taskId);
-        return ResponseEntity.ok(updatedTask);
+    public ResponseEntity<TaskDto> updateTask(@Valid @RequestBody TaskDto task, @PathVariable("id") Long taskId) {
+        Task updatedTask = taskService.updateTask(mapper.toTask(task), taskId);
+        return ResponseEntity.ok(mapper.toDto(updatedTask));
     }
 
     @DeleteMapping("/{id}")

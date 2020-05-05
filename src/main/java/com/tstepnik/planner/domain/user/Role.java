@@ -1,4 +1,4 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
 
 public enum Role {
     ROLE_USER,

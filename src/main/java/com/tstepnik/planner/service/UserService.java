@@ -1,6 +1,6 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.exceptions.EmailAlreadyUsedException;
 import com.tstepnik.planner.exceptions.UserAlreadyExistException;
 import com.tstepnik.planner.repository.UserRepository;
@@ -28,7 +28,7 @@ public class RegistrationService {
 
     public User register(User user) {
         if (emailExist(user.getEmail())) {
-            throw new EmailAlreadyUsedException("There is account with that email adress.");
+            throw new EmailAlreadyUsedException("There is account with that email address.");
         } else if (loginExist(user.getLogin())) {
             throw new UserAlreadyExistException("There is account with that user name.");
         }

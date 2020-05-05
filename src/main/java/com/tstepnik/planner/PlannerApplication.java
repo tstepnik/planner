@@ -1,8 +1,8 @@
 package com.tstepnik.planner;
 
-import com.tstepnik.planner.domain.Role;
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.Role;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.repository.UserRoleRepository;
 import org.springframework.boot.SpringApplication;

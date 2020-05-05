@@ -1,4 +1,6 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
+
+import com.tstepnik.planner.domain.user.Role;
 
 import javax.persistence.*;
 

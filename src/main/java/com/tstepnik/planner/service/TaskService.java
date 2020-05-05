@@ -1,6 +1,8 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.*;
+import com.tstepnik.planner.domain.task.Importance;
+import com.tstepnik.planner.domain.task.Task;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
