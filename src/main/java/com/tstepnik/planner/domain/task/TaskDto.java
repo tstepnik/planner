@@ -1,10 +1,13 @@
 package com.tstepnik.planner.domain.task;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 public class TaskDto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotEmpty
     private String description;
@@ -13,6 +16,14 @@ public class TaskDto {
     private Importance importance;
 
     private boolean isDone;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
