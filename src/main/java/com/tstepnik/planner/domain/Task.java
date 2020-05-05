@@ -2,6 +2,8 @@ package com.tstepnik.planner.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Task {
@@ -20,9 +22,29 @@ public class Task {
 
     private Long userId;
 
+    private ZonedDateTime creationDate;
+
+    private ZonedDateTime plannedFor;
+
     
 
     public Task() {
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public ZonedDateTime getPlannedFor() {
+        return plannedFor;
+    }
+
+    public void setPlannedFor(ZonedDateTime plannedFor) {
+        this.plannedFor = plannedFor;
     }
 
     public Long getUserId() {

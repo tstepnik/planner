@@ -1,10 +1,16 @@
 package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.*;
+import com.tstepnik.planner.exceptions.ExpiredTaskException;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,8 +47,14 @@ public class TaskService {
 
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
+        ZonedDateTime localTime = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
+        task.setCreationDate(localTime);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
+        }
+        if (task.getPlannedFor() == null){
+            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")),LocalTime.of(23,59,59),ZoneId.of("UTC"));
+            task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
         return taskRepository.save(task);
@@ -53,7 +65,9 @@ public class TaskService {
         Task checkedTask = taskRepository.getOne(taskId);
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
-        } else {
+        } else if (checkedTask.getPlannedFor().isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
+            throw new ExpiredTaskException("Time for finish this task has expired. You can't do any changes on it now.");
+        }else{
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
             checkedTask.setDone(task.isDone());
