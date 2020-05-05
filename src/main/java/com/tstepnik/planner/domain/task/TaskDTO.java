@@ -2,14 +2,16 @@ package com.tstepnik.planner.domain.task;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-public class TaskDto {
+public class TaskDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
+    @Size(min=3)
     private String description;
 
     @Enumerated(EnumType.STRING)

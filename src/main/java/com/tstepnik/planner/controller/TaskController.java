@@ -1,7 +1,7 @@
 package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.task.Task;
-import com.tstepnik.planner.domain.task.TaskDto;
+import com.tstepnik.planner.domain.task.TaskDTO;
 import com.tstepnik.planner.domain.task.TaskMapper;
 import com.tstepnik.planner.service.TaskService;
 import com.tstepnik.planner.service.UserService;
@@ -30,7 +30,7 @@ public class TaskController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getTasks() {
+    public ResponseEntity<List<TaskDTO>> getTasks() {
         List<Task> tasks = taskService.findAll();
         return ResponseEntity.ok(mapper.toDto(tasks));
     }
@@ -38,28 +38,28 @@ public class TaskController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/mine")
-    public ResponseEntity<List<TaskDto>> getUserTasks() {
+    public ResponseEntity<List<TaskDTO>> getUserTasks() {
         List<Task> tasks = taskService.getUserTasks();
         return ResponseEntity.ok(mapper.toDto(tasks));
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable("id") Long id) {
+    public ResponseEntity<TaskDTO> getTask(@PathVariable("id") Long id) {
         Task task = taskService.getTask(id);
         return ResponseEntity.ok(mapper.toDto(task));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<TaskDto> addTask(@Valid @RequestBody TaskDto task) {
+    public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody TaskDTO task) {
          taskService.addTask(mapper.toTask(task));
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<TaskDto> updateTask(@Valid @RequestBody TaskDto task, @PathVariable("id") Long taskId) {
+    public ResponseEntity<TaskDTO> updateTask(@Valid @RequestBody TaskDTO task, @PathVariable("id") Long taskId) {
         Task updatedTask = taskService.updateTask(mapper.toTask(task), taskId);
         return ResponseEntity.ok(mapper.toDto(updatedTask));
     }

@@ -2,6 +2,7 @@ package com.tstepnik.planner.domain.task;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Task {
@@ -11,12 +12,13 @@ public class Task {
     private Long id;
 
     @NotEmpty
+    @Size(min=3)
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private boolean isDone;
+    private Boolean isDone;
 
     private Long userId;
 

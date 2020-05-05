@@ -1,7 +1,9 @@
 package com.tstepnik.planner.domain.user;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,15 +15,20 @@ public class User {
     private Long id;
 
     @NotEmpty
+    @Size(min=3)
     private String login;
 
     private String firstName;
 
     private String lastName;
 
+    @NotEmpty
+    @Size(min=3)
+    @Email
     private String email;
 
     @NotEmpty
+    @Size(min=3)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -30,9 +37,10 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String password) {
+    public User(String userName, String password, String email) {
         this.login = userName;
         this.password = password;
+        this.email=email;
     }
 
     public Long getId() {

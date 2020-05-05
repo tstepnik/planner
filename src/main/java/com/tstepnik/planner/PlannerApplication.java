@@ -20,7 +20,7 @@ public class PlannerApplication {
     private final PasswordEncoder passwordEncoder;
 
     public PlannerApplication(UserRoleRepository roleRepository, UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -39,9 +39,9 @@ public class PlannerApplication {
         roleRepository.save(userRole);
         roleRepository.save(adminRole);
 
-        User user = new User("user", passwordEncoder.encode("user"));
+        User user = new User("user", passwordEncoder.encode("user"), "user@gmail.com");
         user.getRoles().add(userRole);
-        User admin = new User("admin", passwordEncoder.encode("admin"));
+        User admin = new User("admin", passwordEncoder.encode("admin"), "admin@gmail.com");
         admin.getRoles().add(adminRole);
         admin.getRoles().add(userRole);
         userRepository.saveAll(Arrays.asList(user, admin));
