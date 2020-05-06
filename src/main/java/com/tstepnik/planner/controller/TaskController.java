@@ -1,10 +1,7 @@
 package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.task.Task;
-import com.tstepnik.planner.domain.task.TaskDTO;
-import com.tstepnik.planner.domain.task.TaskMapper;
 import com.tstepnik.planner.service.TaskService;
-import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,49 +16,45 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
-    private final UserService userService;
-    private final TaskMapper mapper;
 
-    public TaskController(TaskService taskService, UserService userService, TaskMapper mapper) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.userService = userService;
-        this.mapper = mapper;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> getTasks() {
+    public ResponseEntity<List<Task>> getTasks() {
         List<Task> tasks = taskService.findAll();
-        return ResponseEntity.ok(mapper.toDto(tasks));
+        return ResponseEntity.ok(tasks);
     }
 
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/mine")
-    public ResponseEntity<List<TaskDTO>> getUserTasks() {
+    public ResponseEntity<List<Task>> getUserTasks() {
         List<Task> tasks = taskService.getUserTasks();
-        return ResponseEntity.ok(mapper.toDto(tasks));
+        return ResponseEntity.ok(tasks);
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDTO> getTask(@PathVariable("id") Long id) {
+    public ResponseEntity<Task> getTask(@PathVariable("id") Long id) {
         Task task = taskService.getTask(id);
-        return ResponseEntity.ok(mapper.toDto(task));
+        return ResponseEntity.ok(task);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody TaskDTO task) {
-         taskService.addTask(mapper.toEntity(task));
-        return new ResponseEntity<>(task, HttpStatus.CREATED);
+    public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
+        Task entity = taskService.addTask(task);
+        return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<TaskDTO> updateTask(@Valid @RequestBody TaskDTO task, @PathVariable("id") Long taskId) {
-        Task updatedTask = taskService.updateTask(mapper.toEntity(task), taskId);
-        return ResponseEntity.ok(mapper.toDto(updatedTask));
+    public ResponseEntity<Task> updateTask(@Valid @RequestBody Task task, @PathVariable("id") Long taskId) {
+        Task updatedTask = taskService.updateTask(task, taskId);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{id}")

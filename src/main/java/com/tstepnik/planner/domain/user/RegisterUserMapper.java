@@ -1,7 +1,6 @@
-package com.tstepnik.planner.domain.user.userregistrationdto;
+package com.tstepnik.planner.domain.user;
 
 import com.tstepnik.planner.domain.EntityMapper;
-import com.tstepnik.planner.domain.user.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

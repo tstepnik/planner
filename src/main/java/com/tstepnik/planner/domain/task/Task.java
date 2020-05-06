@@ -12,13 +12,14 @@ public class Task {
     private Long id;
 
     @NotEmpty
-    @Size(min=3,max = 255)
+    @Size(min=3,max = 1000)
+    @Column(length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private Boolean isDone;
+    private Boolean isDone = Boolean.FALSE;
 
     private Long userId;
 

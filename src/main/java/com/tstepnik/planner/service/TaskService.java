@@ -46,9 +46,6 @@ public class TaskService {
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
-        if (task.getDone() == null) {
-            task.setDone(Boolean.FALSE);
-        }
         task.setUserId(user.getId());
         return taskRepository.save(task);
     }

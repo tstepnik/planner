@@ -1,4 +1,4 @@
-package com.tstepnik.planner.domain.user.userregistrationdto;
+package com.tstepnik.planner.domain.user;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
