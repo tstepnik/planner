@@ -22,8 +22,7 @@ public class User {
 
     private String lastName;
 
-    @NotEmpty
-    @Size(min=3)
+
     @Email
     private String email;
 

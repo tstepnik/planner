@@ -1,18 +1,9 @@
 package com.tstepnik.planner.domain.user;
 
+import com.tstepnik.planner.domain.EntityMapper;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface UserMapper {
-
-    UserDTO toDto(User user);
-
-    User toUser(UserDTO userDto);
-
-    List<UserDTO> toDto(List<User> users);
-
-    List<User> toUser(List<UserDTO> usersDto);
+public interface UserMapper extends EntityMapper<UserDTO,User> {
 }
 

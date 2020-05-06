@@ -53,14 +53,14 @@ public class TaskController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody TaskDTO task) {
-         taskService.addTask(mapper.toTask(task));
+         taskService.addTask(mapper.toEntity(task));
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TaskDTO> updateTask(@Valid @RequestBody TaskDTO task, @PathVariable("id") Long taskId) {
-        Task updatedTask = taskService.updateTask(mapper.toTask(task), taskId);
+        Task updatedTask = taskService.updateTask(mapper.toEntity(task), taskId);
         return ResponseEntity.ok(mapper.toDto(updatedTask));
     }
 

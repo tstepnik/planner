@@ -3,6 +3,7 @@ package com.tstepnik.planner.domain.user.userregistrationdto;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -13,19 +14,18 @@ public class UserRegisterDTO {
     private Long id;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min = 3)
     private String login;
 
     private String firstName;
 
     private String lastName;
 
-    @NotEmpty
-    @Size(min=3)
+    @Email
     private String email;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min = 3)
     private String password;
 
     public Long getId() {

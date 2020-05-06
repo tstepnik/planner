@@ -43,12 +43,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<UserDTO> updatedUser(@RequestBody UserDTO user, @PathVariable("id") long id) {
-        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(mapper.toUser(user), id));
-        if (updateUser.isEmpty()) {
-            return new ResponseEntity<UserDTO>(mapper.toDto(updateUser.get()), HttpStatus.CONFLICT);//TODO remove when global exception handler is added.
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user, @PathVariable("id") long id) {
+        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(mapper.toEntity(user), id));
+        if (updatedUser.isEmpty()) {
+            return new ResponseEntity<UserDTO>(mapper.toDto(updatedUser.get()), HttpStatus.CONFLICT);//TODO remove when global exception handler is added.
         }
-        return ResponseEntity.ok(mapper.toDto(updateUser.get()));
+        return ResponseEntity.ok(mapper.toDto(updatedUser.get()));
     }
 
     @DeleteMapping("/{id}")

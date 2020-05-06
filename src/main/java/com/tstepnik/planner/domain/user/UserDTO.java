@@ -23,8 +23,7 @@ public class UserDTO {
     @Size(min=3)
     private String lastName;
 
-    @NotEmpty
-    @Size(min=3)
+
     @Email
     private String email;
 
