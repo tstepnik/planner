@@ -6,11 +6,8 @@ import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,13 +44,14 @@ public class TaskService {
 
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
-        ZonedDateTime localTime = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
-        task.setCreationDate(localTime);
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
+        task.setCreationDate(now);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
-        if (task.getPlannedFor() == null){
-            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")),LocalTime.of(23,59,59),ZoneId.of("UTC"));
+        if (task.getPlannedFor() == null) {
+            LocalTime endOfTheDay = LocalTime.of(23, 59, 59);
+            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")), endOfTheDay, ZoneId.of("UTC"));
             task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
@@ -66,8 +64,8 @@ public class TaskService {
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else if (checkedTask.getPlannedFor().isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
-            throw new ExpiredTaskException("Time for finish this task has expired. You can't do any changes on it now.");
-        }else{
+            throw new ExpiredTaskException("Time for finish this task had expired at: " + checkedTask.getPlannedFor() + " You can't do any changes on it now.");
+        } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
             checkedTask.setDone(task.isDone());

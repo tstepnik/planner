@@ -1,8 +1,9 @@
 package com.tstepnik.planner.domain;
 
+import com.tstepnik.planner.domain.validators.NotBeforeNow;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -24,6 +25,7 @@ public class Task {
 
     private ZonedDateTime creationDate;
 
+    @NotBeforeNow
     private ZonedDateTime plannedFor;
 
     
