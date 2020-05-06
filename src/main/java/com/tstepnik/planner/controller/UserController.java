@@ -37,12 +37,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<User> updatedUser(@RequestBody User user, @PathVariable("id") long id) {
-        Optional<User> updateUser = Optional.ofNullable(userService.updateUser(user, id));
-        if (updateUser.isEmpty()) {
-            return new ResponseEntity<User>(updateUser.get(), HttpStatus.CONFLICT);
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") long id) {
+        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(user, id));
+        if (updatedUser.isEmpty()) {
+            return new ResponseEntity<User>(updatedUser.get(), HttpStatus.CONFLICT);
         }
-        return ResponseEntity.ok(updateUser.get());
+        return ResponseEntity.ok(updatedUser.get());
     }
 
     @DeleteMapping("/{id}")

@@ -19,7 +19,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private boolean isDone;
+    private Boolean isDone;
 
     private Long userId;
 

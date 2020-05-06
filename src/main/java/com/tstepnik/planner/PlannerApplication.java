@@ -25,9 +25,9 @@ public class PlannerApplication {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
     public static void main(String[] args) {
         SpringApplication.run(PlannerApplication.class, args);
+
     }
 
     //TODO move this method to SQL file or sth similar, but don't keep it here.
