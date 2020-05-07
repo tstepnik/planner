@@ -1,7 +1,7 @@
 package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.*;
-import com.tstepnik.planner.exceptions.ExpiredTaskException;
+import com.tstepnik.planner.exceptions.TaskExpiredException;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -64,7 +64,7 @@ public class TaskService {
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else if (checkedTask.getPlannedFor().isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
-            throw new ExpiredTaskException("Time for finish this task had expired at: " + checkedTask.getPlannedFor() + " You can't do any changes on it now.");
+            throw new TaskExpiredException("Time for finish this task had expired at: " + checkedTask.getPlannedFor());
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
