@@ -33,7 +33,7 @@ public class StatisticsService {
         User loggedUser = authService.getLoggedUser();
         Integer userArchivedTasks = countArchivedTasks();
         Integer userFinishedTasks = countFinishTasks();
-        Double userProductivity = (double) userFinishedTasks / userArchivedTasks;
+        Double userProductivity = (double)userFinishedTasks/ userArchivedTasks;
         statisticsRepository.save(new Statistics(loggedUser.getId(), userProductivity, userArchivedTasks, userFinishedTasks));
     }
 
