@@ -2,6 +2,8 @@ package com.tstepnik.planner.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Task {
@@ -11,16 +13,38 @@ public class Task {
     private Long id;
 
     @NotEmpty
+    @Size(min = 3,max = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private boolean isDone;
+    private boolean done;
 
     private Long userId;
 
+    private ZonedDateTime creationDate;
+
+    @NotBeforeNow
+    private ZonedDateTime plannedFor;
+
     public Task() {
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public ZonedDateTime getPlannedFor() {
+        return plannedFor;
+    }
+
+    public void setPlannedFor(ZonedDateTime plannedFor) {
+        this.plannedFor = plannedFor;
     }
 
     public Long getUserId() {
@@ -48,11 +72,11 @@ public class Task {
     }
 
     public boolean isDone() {
-        return isDone;
+        return done;
     }
 
     public void setDone(boolean done) {
-        isDone = done;
+        done = done;
     }
 
     public Importance getImportance() {
