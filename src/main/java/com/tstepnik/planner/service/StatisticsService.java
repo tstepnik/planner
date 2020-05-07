@@ -6,6 +6,7 @@ import com.tstepnik.planner.repository.StatisticsRepository;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -25,29 +26,30 @@ public class StatisticsService {
         this.authService = authService;
     }
 
-    public Statistics getActualStatistics(){
-       return statisticsRepository.findFirstByOrderByIdDesc();
-    }
 
-    public void createAndGetStatistics() {
+    public Statistics createAndGetStatistics() {
+        DecimalFormat df = new DecimalFormat("##.##");
         User loggedUser = authService.getLoggedUser();
         Integer userArchivedTasks = countArchivedTasks();
         Integer userFinishedTasks = countFinishTasks();
         Double userProductivity = (double)userFinishedTasks/ userArchivedTasks;
-        statisticsRepository.save(new Statistics(loggedUser.getId(), userProductivity, userArchivedTasks, userFinishedTasks));
+        String format = df.format(userProductivity).replaceAll(",",".");
+        Double productivity = Double.valueOf(format);
+
+        return statisticsRepository.save(new Statistics(loggedUser.getId(),productivity, userArchivedTasks, userFinishedTasks));
     }
 
     public Integer countArchivedTasks() {
         User loggedUser = authService.getLoggedUser();
-        ZonedDateTime now = ZonedDateTime.now();
-        Long numberOfTasks = taskRepository.countAllUserArchivedTasks(loggedUser.getId());
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
+        Long numberOfTasks = taskRepository.countAllUserArchivedTasks(loggedUser.getId(),now);
         return numberOfTasks.intValue();
     }
 
     public Integer countFinishTasks() {
         User loggedUser = authService.getLoggedUser();
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
-        Long numberOfTasks = taskRepository.countAllByUserIdAndDoneIsTrue(loggedUser.getId());
+        Long numberOfTasks = taskRepository.countAllUserFinishAndArchivedTasks(loggedUser.getId(),now);
         return numberOfTasks.intValue();
     }
 }

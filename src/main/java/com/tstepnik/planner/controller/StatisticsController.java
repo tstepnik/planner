@@ -22,7 +22,6 @@ public class StatisticsController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/mine")
     public ResponseEntity<Statistics> getStatistics(){
-        statisticsService.createAndGetStatistics();
-       return ResponseEntity.ok(statisticsService.getActualStatistics());
+       return ResponseEntity.ok(statisticsService.createAndGetStatistics());
     }
 }

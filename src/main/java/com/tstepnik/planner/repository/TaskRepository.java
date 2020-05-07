@@ -19,11 +19,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
 //    Long getAllByUserIdAndDoneIsTrue(Long userId);
 
-    @Query( "SELECT COUNT(t) FROM Task t WHERE t.userId=:userId")
-    Long countAllUserArchivedTasks(@Param("userId") Long userId);
+    @Query( "SELECT COUNT(t) FROM Task t WHERE t.userId=:userId AND t.plannedFor <= :now")
+    Long countAllUserArchivedTasks(@Param("userId") Long userId, @Param("now") ZonedDateTime dateTime);
 
-//    @Query("SELECT COUNT(t) FROM Task t WHERE t.isDone=true AND t.userId=?1 ")
-//    Long countAllUserFinishAndArchivedTasks(Long userId);
-
-    Long countAllByUserIdAndDoneIsTrue(Long userId);
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.done=true AND t.userId=?1 AND t.plannedFor <= ?2")
+    Long countAllUserFinishAndArchivedTasks(Long userId,ZonedDateTime dateTime);
 }
