@@ -29,7 +29,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterDTO> registerUser(@RequestBody UserRegisterDTO user) {
-        Optional<User> registerUser = Optional.ofNullable(registrationService.register(mapper.toEntity(user)));
+        Optional<User> registerUser = Optional.ofNullable(registrationService.register(mapper.toEntity(user)));//TODO Remove OfNullable. Better spring throwing exception.
         if (registerUser.isEmpty()) {
             //TODO remove it once you add exception handler.
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

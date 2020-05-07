@@ -44,7 +44,7 @@ public class UserController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user, @PathVariable("id") long id) {
-        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(mapper.toEntity(user), id));
+        Optional<User> updatedUser = Optional.ofNullable(userService.updateUser(mapper.toEntity(user), id));//TODO Remove OfNullable. Better spring throwing exception.
         if (updatedUser.isEmpty()) {
             return new ResponseEntity<UserDTO>(mapper.toDto(updatedUser.get()), HttpStatus.CONFLICT);//TODO remove when global exception handler is added.
         }

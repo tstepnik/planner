@@ -6,9 +6,9 @@ public interface EntityMapper<T, R> {
 
     T toDto(R r);
 
-    R toEntity(T userDto);
+    R toEntity(T t);
 
-    List<T> toDto(List<R> users);
+    List<T> toDto(List<R> r);
 
-    List<R> toEntity(List<T> usersDto);
+    List<R> toEntity(List<T> t);
 }
