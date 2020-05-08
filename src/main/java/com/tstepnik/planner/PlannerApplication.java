@@ -1,8 +1,8 @@
 package com.tstepnik.planner;
 
-import com.tstepnik.planner.domain.Role;
-import com.tstepnik.planner.domain.User;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.Role;
+import com.tstepnik.planner.domain.user.User;
+import com.tstepnik.planner.domain.user.UserRole;
 import com.tstepnik.planner.repository.UserRepository;
 import com.tstepnik.planner.repository.UserRoleRepository;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,7 @@ public class PlannerApplication {
     private final PasswordEncoder passwordEncoder;
 
     public PlannerApplication(UserRoleRepository roleRepository, UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -39,9 +39,9 @@ public class PlannerApplication {
         roleRepository.save(userRole);
         roleRepository.save(adminRole);
 
-        User user = new User("user", passwordEncoder.encode("user"));
+        User user = new User("user", passwordEncoder.encode("user"), "user@gmail.com");
         user.getRoles().add(userRole);
-        User admin = new User("admin", passwordEncoder.encode("admin"));
+        User admin = new User("admin", passwordEncoder.encode("admin"), "admin@gmail.com");
         admin.getRoles().add(adminRole);
         admin.getRoles().add(userRole);
         userRepository.saveAll(Arrays.asList(user, admin));

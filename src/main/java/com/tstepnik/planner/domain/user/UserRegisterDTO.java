@@ -1,40 +1,32 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import javax.validation.constraints.Size;
 
-@Entity(name = "users")
-public class User {
+public class UserRegisterDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
+    @Size(min = 3)
     private String login;
 
     private String firstName;
 
     private String lastName;
 
+    @Email
     private String email;
 
     @NotEmpty
+    @Size(min = 3)
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
-
-    public User() {
-    }
-
-    public User(String userName, String password) {
-        this.login = userName;
-        this.password = password;
-    }
 
     public Long getId() {
         return id;
@@ -48,8 +40,8 @@ public class User {
         return login;
     }
 
-    public void setLogin(String userName) {
-        this.login = userName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -83,13 +75,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
-
 }

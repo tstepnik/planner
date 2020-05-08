@@ -1,8 +1,7 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.Task;
+import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.service.TaskService;
-import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,17 +16,16 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
-    private final UserService userService;
 
-    public TaskController(TaskService taskService, UserService userService) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Task>> getTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+        List<Task> tasks = taskService.findAll();
+        return ResponseEntity.ok(tasks);
     }
 
 
@@ -41,14 +39,15 @@ public class TaskController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTask(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(taskService.getTask(id));
+        Task task = taskService.getTask(id);
+        return ResponseEntity.ok(task);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
-        Task userTask = taskService.addTask(task);
-        return new ResponseEntity<>(userTask, HttpStatus.CREATED);
+        Task addedTask = taskService.addTask(task);
+        return new ResponseEntity<>(addedTask, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -1,5 +1,5 @@
 package com.tstepnik.planner.repository;
-import com.tstepnik.planner.domain.UserRole;
+import com.tstepnik.planner.domain.user.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.user;
 
 import javax.persistence.*;
 

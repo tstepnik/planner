@@ -1,7 +1,8 @@
-package com.tstepnik.planner.domain;
+package com.tstepnik.planner.domain.task;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Task {
@@ -11,25 +12,16 @@ public class Task {
     private Long id;
 
     @NotEmpty
+    @Size(min=3,max = 1000)
+    @Column(length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private boolean isDone;
+    private Boolean isDone = Boolean.FALSE;
 
     private Long userId;
-
-    public Task() {
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Long getId() {
         return id;
@@ -47,19 +39,27 @@ public class Task {
         this.description = description;
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public void setDone(boolean done) {
-        isDone = done;
-    }
-
     public Importance getImportance() {
         return importance;
     }
 
     public void setImportance(Importance importance) {
         this.importance = importance;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
