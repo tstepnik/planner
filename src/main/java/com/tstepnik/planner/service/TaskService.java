@@ -50,8 +50,7 @@ public class TaskService {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
         if (task.getPlannedFor() == null) {
-            LocalTime endOfTheDay = LocalTime.of(23, 59, 59);
-            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")), endOfTheDay, ZoneId.of("UTC"));
+            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")).plusDays(1), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
             task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
