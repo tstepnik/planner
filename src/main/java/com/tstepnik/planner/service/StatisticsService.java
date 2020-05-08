@@ -28,7 +28,7 @@ public class StatisticsService {
 
 
     public Statistics createAndGetStatistics() {
-        DecimalFormat df = new DecimalFormat("##.##");
+        DecimalFormat df = new DecimalFormat("##.###");
         User loggedUser = authService.getLoggedUser();
         Integer userArchivedTasks = countArchivedTasks();
         Integer userFinishedTasks = countFinishTasks();
