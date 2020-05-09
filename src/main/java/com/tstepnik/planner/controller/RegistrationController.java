@@ -2,7 +2,7 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.domain.user.UserRegisterDTO;
-import com.tstepnik.planner.domain.user.UserRegisterMapper;
+import com.tstepnik.planner.domain.mappers.UserRegisterMapper;
 import com.tstepnik.planner.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

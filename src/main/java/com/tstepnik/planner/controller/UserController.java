@@ -2,7 +2,7 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.domain.user.UserDTO;
-import com.tstepnik.planner.domain.user.UserMapper;
+import com.tstepnik.planner.domain.mappers.UserMapper;
 import com.tstepnik.planner.service.AuthService;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
