@@ -7,12 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
 import java.time.ZonedDateTime;
 
+@Entity
 @Getter
 @Setter
-@Entity
 public class Task {
 
     @Id
@@ -20,7 +19,7 @@ public class Task {
     private Long id;
 
     @NotEmpty
-    @Size(min = 3, max = 1000)
+    @Size(min=3,max = 1000)
     @Column(length = 1000)
     private String description;
 
@@ -36,3 +35,5 @@ public class Task {
     @Future
     private ZonedDateTime plannedFor;
 }
+
+
