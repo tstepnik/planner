@@ -1,6 +1,6 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.Task;
+import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.service.TaskService;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;

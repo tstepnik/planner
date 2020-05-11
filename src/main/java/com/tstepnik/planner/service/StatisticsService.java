@@ -1,7 +1,7 @@
 package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.Statistics;
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.StatisticsRepository;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import java.time.ZonedDateTime;
 @Service
 public class StatisticsService {
 
-    TaskRepository taskRepository;
-    StatisticsRepository statisticsRepository;
-    TaskService taskService;
-    AuthService authService;
+   private final TaskRepository taskRepository;
+   private final StatisticsRepository statisticsRepository;
+   private final TaskService taskService;
+   private final AuthService authService;
 
     public StatisticsService(TaskRepository taskRepository, StatisticsRepository statisticsRepository,
                              TaskService taskService, AuthService authService) {
@@ -32,7 +32,7 @@ public class StatisticsService {
         User loggedUser = authService.getLoggedUser();
         Integer userArchivedTasks = countArchivedTasks();
         Integer userFinishedTasks = countFinishTasks();
-        Double userProductivity = (double)userFinishedTasks/ userArchivedTasks;
+        Double userProductivity = ((double)userFinishedTasks/ userArchivedTasks)*100;
         String format = df.format(userProductivity).replaceAll(",",".");
         Double productivity = Double.valueOf(format);
 

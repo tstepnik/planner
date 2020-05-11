@@ -1,7 +1,8 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.*;
-import com.tstepnik.planner.exceptions.ExpiredTaskException;
+import com.tstepnik.planner.domain.task.Importance;
+import com.tstepnik.planner.domain.task.Task;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.exceptions.TaskExpiredException;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -68,7 +69,7 @@ public class TaskService {
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
-            checkedTask.setDone(task.isDone());
+            checkedTask.setDone(task.getDone());
             return taskRepository.save(checkedTask);
         }
     }

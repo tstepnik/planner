@@ -1,6 +1,7 @@
 package com.tstepnik.planner.repository;
 
-import com.tstepnik.planner.domain.Task;
+import com.fasterxml.jackson.datatype.jsr310.deser.key.ZoneIdKeyDeserializer;
+import com.tstepnik.planner.domain.task.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT COUNT(t) FROM Task t WHERE t.done=true AND t.userId = ?1 AND t.plannedFor <= ?2")
     Long countAllUserFinishAndArchivedTasks(Long userId, ZonedDateTime dateTime);
+
+    Long countAllByUserIdAndPlannedForBefore(Long userId, ZonedDateTime dateTime);
 
 }

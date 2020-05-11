@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/statistics")
 public class StatisticsController {
 
-    StatisticsService statisticsService;
+    public final StatisticsService statisticsService;
 
     public StatisticsController(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
