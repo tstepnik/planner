@@ -10,7 +10,7 @@
     <property name="autoIncrement" value="true"/>
 
     <changeSet author="tstepnik" id="20190513232743_initial_schema">
-        <createTable tableName="users">
+        <createTable tableName="user">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -29,9 +29,16 @@
             <column name="password" type="varchar(255)" >
                 <constraints nullable="false"/>
             </column>
-            <column name="roles" type="varchar(255)"/>
         </createTable>
         
+        <createTable tableName="user_role">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
         <createTable tableName="">
             <column></column>
         </createTable>
