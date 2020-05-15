@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
