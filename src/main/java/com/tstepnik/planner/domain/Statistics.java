@@ -1,12 +1,18 @@
 package com.tstepnik.planner.domain;
 
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.net.Inet4Address;
+import java.time.ZonedDateTime;
 
+@Getter
+@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Statistics {
 
     @Id
@@ -21,52 +27,13 @@ public class Statistics {
 
     private Integer numberOfFinishTasks;
 
-    public Statistics() {
-    }
-    public Statistics(Long userId, Double productivity, Integer numberOfTasks,Integer numberOfFinishTasks){
-        this.userId=userId;
-        this.productivity=productivity;
-        this.numberOfTasks=numberOfTasks;
-        this.numberOfFinishTasks=numberOfFinishTasks;
-    }
+    private ZonedDateTime creationDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
+    public Statistics(Long userId, Double productivity, Integer userArchivedTasks, Integer userFinishedTasks, ZonedDateTime now) {
         this.userId = userId;
-    }
-
-    public Double getProductivity() {
-        return productivity;
-    }
-
-    public void setProductivity(Double productivity) {
         this.productivity = productivity;
-    }
-
-    public Integer getNumberOfTasks() {
-        return numberOfTasks;
-    }
-
-    public void setNumberOfTasks(Integer numberOfTasks) {
-        this.numberOfTasks = numberOfTasks;
-    }
-
-    public Integer getNumberOfFinishTasks() {
-        return numberOfFinishTasks;
-    }
-
-    public void setNumberOfFinishTasks(Integer numberOfFinishTasks) {
-        this.numberOfFinishTasks = numberOfFinishTasks;
+        this.numberOfTasks = userArchivedTasks;
+        this.numberOfFinishTasks = userFinishedTasks;
+        this.creationDate = now;
     }
 }

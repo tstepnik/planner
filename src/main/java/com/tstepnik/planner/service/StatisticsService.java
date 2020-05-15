@@ -18,10 +18,6 @@ public class StatisticsService {
     private final TaskService taskService;
     private final AuthService authService;
 
-    private int countUserAskedForStatistics = 0;
-    private ZonedDateTime firstTimeUserGetStatistics = ZonedDateTime.now(ZoneId.of("UTC"));
-    private Statistics statistics = null;
-
     public StatisticsService(TaskRepository taskRepository, StatisticsRepository statisticsRepository,
                              TaskService taskService, AuthService authService) {
         this.taskRepository = taskRepository;
@@ -31,26 +27,28 @@ public class StatisticsService {
     }
 
     public Statistics createSaveAndReturnStatistics() {
-
-        if (countUserAskedForStatistics < 1) {
-            firstTimeUserGetStatistics = ZonedDateTime.now();
-            countUserAskedForStatistics++;
-
+        User loggedUser = authService.getLoggedUser();
+        Statistics statistics = statisticsRepository.findFirstByUserIdOrderByIdDesc(loggedUser.getId());
+        int x = 0;
+        if (statistics == null || todayWasNotSavedStatistics(statistics.getCreationDate())) {
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
             DecimalFormat df = new DecimalFormat("##.#");
-            User loggedUser = authService.getLoggedUser();
             Integer userArchivedTasks = countArchivedTasks();
             Integer userFinishedTasks = countFinishTasks();
             Double userProductivity = ((double) userFinishedTasks / userArchivedTasks) * 100;
             String format = df.format(userProductivity).replaceAll(",", ".");
             Double productivity = Double.valueOf(format);
-            statistics = new Statistics(loggedUser.getId(), productivity, userArchivedTasks, userFinishedTasks);
+            return statisticsRepository.save(new Statistics(loggedUser.getId(), productivity, userArchivedTasks, userFinishedTasks, now));
 
-            statisticsRepository.save(statistics);
-        }
-        if (firstTimeUserGetStatistics.getDayOfMonth() != ZonedDateTime.now().getDayOfMonth()) {
-            countUserAskedForStatistics = 0;
         }
         return statistics;
+    }
+
+    private boolean todayWasNotSavedStatistics(ZonedDateTime creationDate) {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
+
+        return creationDate.getDayOfYear() != now.getDayOfYear() &&
+                creationDate.getDayOfYear() <= now.getDayOfYear();
     }
 
     public Integer countArchivedTasks() {
