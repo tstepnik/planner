@@ -48,22 +48,30 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <addForeignKeyConstraint baseTableName="user_roles"
                                  baseColumnNames="user_id"
                                  constraintName="fk_user"
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
-        
+
         <addForeignKeyConstraint baseTableName="user_roles"
                                  baseColumnNames="roles_id"
                                  constraintName="fk_role"
                                  referencedTableName="user_role"
                                  referencedColumnNames="id"/>
-        
-        <createTable tableName="">
-            <column></column>
+
+        <createTable tableName="task">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="description" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="importance" type="varchar(255)">
+            </column>
+            <column name="isDone" type="boolean">
+            </column>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>
