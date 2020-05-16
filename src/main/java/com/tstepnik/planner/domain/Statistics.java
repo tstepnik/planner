@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,9 +27,9 @@ public class Statistics {
 
     private Integer numberOfFinishTasks;
 
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
-    public Statistics(Long userId, Double productivity, Integer userArchivedTasks, Integer userFinishedTasks, ZonedDateTime now) {
+    public Statistics(Long userId, Double productivity, Integer userArchivedTasks, Integer userFinishedTasks, LocalDateTime now) {
         this.userId = userId;
         this.productivity = productivity;
         this.numberOfTasks = userArchivedTasks;

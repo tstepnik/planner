@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +18,9 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     Optional<Task> findById(Long id);
 
     @Query("SELECT COUNT(t) FROM Task t WHERE t.userId = ?1 AND t.plannedFor <= ?2")
-    Long countAllUserArchivedTasks(Long userId, ZonedDateTime dateTime);
+    Long countAllUserArchivedTasks(Long userId, LocalDateTime dateTime);
 
     @Query("SELECT COUNT(t) FROM Task t WHERE t.done=true AND t.userId = ?1 AND t.plannedFor <= ?2")
-    Long countAllUserFinishAndArchivedTasks(Long userId, ZonedDateTime dateTime);
+    Long countAllUserFinishAndArchivedTasks(Long userId, LocalDateTime dateTime);
 
 }

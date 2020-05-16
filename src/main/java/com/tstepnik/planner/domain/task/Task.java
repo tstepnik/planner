@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -30,10 +31,10 @@ public class Task {
 
     private Long userId;
 
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
     @Future
-    private ZonedDateTime plannedFor;
+    private LocalDateTime plannedFor;
 }
 
 
