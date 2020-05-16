@@ -2,42 +2,39 @@ package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    //TODO change logic, don;t use database for logged user
-    public User getLoggedUser(Principal principal) {
-        String login = principal.getName();
-        return userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    //TODO consider situations when null could be returned or which errors could be throwed.
+    public User getLoggedUser() {
+        return authService.getLoggedUser();
     }
 
     public User updateUser(User user, long id) {
-        Optional<User> currentUser = userRepository.findById(id);//TODO change logic, example: .orElseTrow...
-        currentUser.get().setPassword(user.getPassword());
-        currentUser.get().setEmail(user.getEmail());
-        currentUser.get().setFirstName(user.getFirstName());
-        currentUser.get().setLastName(user.getLastName());
-        currentUser.get().setLogin(user.getLogin());
-        return userRepository.save(currentUser.get());
+        User currentUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        currentUser.setPassword(user.getPassword());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setLogin(user.getLogin());
+        return userRepository.save(currentUser);
     }
 
     public void deleteUser(Long id) {

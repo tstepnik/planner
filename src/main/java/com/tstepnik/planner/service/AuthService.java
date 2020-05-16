@@ -12,6 +12,7 @@ public class AuthService {
     public User getLoggedUser() {
         CustomUserDetails userDetails = (CustomUserDetails) ((UsernamePasswordAuthenticationToken)
                 SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        User loggedUser = userDetails.getUser();
         return userDetails.getUser();
     }
 }
