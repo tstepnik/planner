@@ -1,10 +1,9 @@
 package com.tstepnik.planner.domain;
 
-import com.tstepnik.planner.domain.validators.NotBeforeNow;
-
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 public class Task {
@@ -23,29 +22,37 @@ public class Task {
 
     private Long userId;
 
-    private ZonedDateTime creationDate;
+    private LocalDateTime creationDate;
 
-    @NotBeforeNow
-    private ZonedDateTime plannedFor;
+    @Future
+    private LocalDateTime plannedFor;
 
     
 
     public Task() {
     }
 
-    public ZonedDateTime getCreationDate() {
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
+
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public ZonedDateTime getPlannedFor() {
+    public LocalDateTime getPlannedFor() {
         return plannedFor;
     }
 
-    public void setPlannedFor(ZonedDateTime plannedFor) {
+    public void setPlannedFor(LocalDateTime plannedFor) {
         this.plannedFor = plannedFor;
     }
 

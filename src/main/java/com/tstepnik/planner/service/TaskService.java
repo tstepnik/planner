@@ -44,13 +44,13 @@ public class TaskService {
 
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
+       LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         task.setCreationDate(now);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
         if (task.getPlannedFor() == null) {
-            ZonedDateTime defaultPlannedTime = ZonedDateTime.of(LocalDate.now(ZoneId.of("UTC")).plusDays(1), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
+            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT);
             task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
@@ -62,7 +62,7 @@ public class TaskService {
         Task checkedTask = taskRepository.getOne(taskId);
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
-        } else if (checkedTask.getPlannedFor().isBefore(ZonedDateTime.now(ZoneId.of("UTC")))) {
+        } else if (checkedTask.getPlannedFor().isBefore(LocalDateTime.now())) {
             throw new TaskExpiredException("Time for finish this task had expired at: " + checkedTask.getPlannedFor());
         } else {
             checkedTask.setImportance(task.getImportance());
