@@ -52,7 +52,7 @@ public class TaskService {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
         if (task.getPlannedFor() == null) {
-            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT);
+            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT.);
             task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
@@ -65,7 +65,7 @@ public class TaskService {
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else if (checkedTask.getPlannedFor().isBefore(LocalDateTime.now())) {
-            throw new TaskExpiredException("Time for finish this task had expired at: " + checkedTask.getPlannedFor());
+            throw new TaskExpiredException("Time for finish task with id " + checkedTask.getId() + " had expired at: " + checkedTask.getPlannedFor());
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());

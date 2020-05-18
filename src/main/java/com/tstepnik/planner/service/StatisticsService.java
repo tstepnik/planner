@@ -28,7 +28,6 @@ public class StatisticsService {
     public Statistics createSaveAndReturnStatistics() {
         User loggedUser = authService.getLoggedUser();
         Statistics statistics = statisticsRepository.findFirstByUserIdOrderByIdDesc(loggedUser.getId());
-        int x = 0;
         if (statistics == null || todayWasNotSavedStatistics(statistics.getCreationDate())) {
             LocalDateTime now = LocalDateTime.now();
             DecimalFormat df = new DecimalFormat("##.#");

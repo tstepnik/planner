@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.TimeZone;
 
 @SpringBootApplication
 public class PlannerApplication {
@@ -33,6 +34,7 @@ public class PlannerApplication {
     //TODO move this method to SQL file or sth similar, but don't keep it here.
     @PostConstruct
     private void init() {
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         UserRole userRole = new UserRole(Role.ROLE_USER);
         UserRole adminRole = new UserRole(Role.ROLE_ADMIN);
 
