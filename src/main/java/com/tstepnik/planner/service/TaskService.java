@@ -48,7 +48,9 @@ public class TaskService {
 
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
+
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+
         task.setCreationDate(now);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
