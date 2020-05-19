@@ -52,7 +52,7 @@ public class TaskService {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
         if (task.getPlannedFor() == null) {
-            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT.);
+            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT);
             task.setPlannedFor(defaultPlannedTime);
         }
         task.setUserId(user.getId());
