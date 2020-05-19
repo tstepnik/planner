@@ -59,14 +59,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-=======
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
         <dependency>
->>>>>>> develop
+
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -93,11 +91,6 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
-<<<<<<< HEAD
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-=======
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
@@ -107,7 +100,6 @@
                 </configuration>
             </plugin>
 
->>>>>>> develop
         </plugins>
     </build>
 
