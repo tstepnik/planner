@@ -2,8 +2,6 @@ package com.tstepnik.planner.service;
 
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.UserRepository;
-import com.tstepnik.planner.security.auth.CustomUserDetails;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +50,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersEmptyRepository() {
-        when(service.getUsers()).thenReturn(Collections.emptyList());
+        when(userRepository.findAll()).thenReturn(Collections.emptyList());
         Assertions.assertEquals(service.getUsers(), Collections.emptyList());
     }
 
