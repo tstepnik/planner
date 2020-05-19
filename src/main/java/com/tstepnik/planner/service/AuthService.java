@@ -1,6 +1,6 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.security.auth.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,12 +1,12 @@
 package com.tstepnik.planner.controller;
 
-import com.tstepnik.planner.domain.Task;
+
+import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.service.TaskService;
 import com.tstepnik.planner.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

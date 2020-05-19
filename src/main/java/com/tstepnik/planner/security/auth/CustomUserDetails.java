@@ -7,10 +7,10 @@ import java.util.Collection;
 
 public class CustomUserDetails extends User {
 
-    private com.tstepnik.planner.domain.User user;
+    private com.tstepnik.planner.domain.user.User user;
 
     public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
-                             com.tstepnik.planner.domain.User user) {
+                             com.tstepnik.planner.domain.user.User user) {
         super(username, password, authorities);
         this.user = user;
     }
@@ -25,7 +25,7 @@ public class CustomUserDetails extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public com.tstepnik.planner.domain.User getUser() {
+    public com.tstepnik.planner.domain.user.User getUser() {
         return user;
     }
 }
