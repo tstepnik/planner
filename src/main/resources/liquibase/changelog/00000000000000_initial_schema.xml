@@ -69,6 +69,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="importance" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="isDone" type="boolean">
             </column>
