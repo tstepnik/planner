@@ -7,6 +7,7 @@ import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -28,11 +29,11 @@ public class StatisticsService {
     public Statistics createSaveAndReturnStatistics() {
         User loggedUser = authService.getLoggedUser();
         Statistics statistics = statisticsRepository.findFirstByUserIdOrderByIdDesc(loggedUser.getId());
-        if (statistics == null || todayWasNotSavedStatistics(statistics.getCreationDate())) {
+        if (statistics == null || isBeforeToday(statistics.getCreationDate())) {
             LocalDateTime now = LocalDateTime.now();
             DecimalFormat df = new DecimalFormat("##.#");
             Integer userArchivedTasks = countArchivedTasks();
-            Integer userFinishedTasks = countFinishTasks();
+            Integer userFinishedTasks = countFinishedTasks();
             Double userProductivity = ((double) userFinishedTasks / userArchivedTasks) * 100;
             String format = df.format(userProductivity).replaceAll(",", ".");
             Double productivity = Double.valueOf(format);
@@ -42,8 +43,8 @@ public class StatisticsService {
         return statistics;
     }
     
-    private boolean todayWasNotSavedStatistics(LocalDateTime creationDate) {
-        LocalDateTime now = LocalDateTime.now();
+    private boolean isBeforeToday(LocalDateTime creationDate) {
+        LocalDate now = LocalDate.now();
 
         return creationDate.getDayOfYear() != now.getDayOfYear() &&
                 creationDate.getDayOfYear() <= now.getDayOfYear();
@@ -56,7 +57,7 @@ public class StatisticsService {
         return numberOfTasks.intValue();
     }
 
-    public Integer countFinishTasks() {
+    public Integer countFinishedTasks() {
         User loggedUser = authService.getLoggedUser();
         LocalDateTime now = LocalDateTime.now();
         Long numberOfTasks = taskRepository.countAllUserFinishAndArchivedTasks(loggedUser.getId(), now);
