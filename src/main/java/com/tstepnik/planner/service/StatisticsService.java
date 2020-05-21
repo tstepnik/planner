@@ -31,7 +31,7 @@ public class StatisticsService {
         Statistics statistics = statisticsRepository.findFirstByUserIdOrderByIdDesc(loggedUser.getId());
         if (statistics == null || isBeforeToday(statistics.getCreationDate())) {
             LocalDateTime now = LocalDateTime.now();
-            DecimalFormat df = new DecimalFormat("##.#");
+            DecimalFormat df = new DecimalFormat("#.#");
             Integer userArchivedTasks = countArchivedTasks();
             Integer userFinishedTasks = countFinishedTasks();
             Double userProductivity = ((double) userFinishedTasks / userArchivedTasks) * 100;
