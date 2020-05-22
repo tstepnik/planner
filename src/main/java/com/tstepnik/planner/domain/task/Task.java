@@ -24,7 +24,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private Boolean isDone = Boolean.FALSE;
+    private Boolean done = Boolean.FALSE;
 
     private Long userId;
 
