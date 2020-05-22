@@ -40,7 +40,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="user_roles">
+        <createTable tableName="user_user_role">
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -49,13 +49,13 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="user_roles"
+        <addForeignKeyConstraint baseTableName="user_user_role"
                                  baseColumnNames="user_id"
                                  constraintName="fk_user"
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="user_roles"
+        <addForeignKeyConstraint baseTableName="user_user_role"
                                  baseColumnNames="roles_id"
                                  constraintName="fk_role"
                                  referencedTableName="user_role"
