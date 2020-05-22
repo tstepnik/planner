@@ -1,6 +1,6 @@
 package com.tstepnik.planner.security.auth;
 
-import com.tstepnik.planner.domain.User;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

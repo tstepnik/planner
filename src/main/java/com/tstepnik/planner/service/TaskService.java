@@ -1,12 +1,16 @@
 package com.tstepnik.planner.service;
 
-import com.tstepnik.planner.domain.*;
+import com.tstepnik.planner.domain.task.Importance;
+import com.tstepnik.planner.domain.task.Task;
+import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.exceptions.TaskExpiredException;
 import com.tstepnik.planner.repository.TaskRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -44,7 +48,9 @@ public class TaskService {
 
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
-       LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+
         task.setCreationDate(now);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
@@ -64,10 +70,11 @@ public class TaskService {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else if (checkedTask.getPlannedFor().isBefore(LocalDateTime.now())) {
             throw new TaskExpiredException("Task with id " + checkedTask.getId() + " was planned for " + checkedTask.getPlannedFor() + "you can't modify it any more.");
+
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
-            checkedTask.setDone(task.isDone());
+            checkedTask.setDone(task.getDone());
             return taskRepository.save(checkedTask);
         }
     }
