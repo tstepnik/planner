@@ -63,7 +63,7 @@ public class TaskService {
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
         } else if (checkedTask.getPlannedFor().isBefore(LocalDateTime.now())) {
-            throw new TaskExpiredException("Time for finish this task had expired at: " + checkedTask.getPlannedFor());
+            throw new TaskExpiredException("Task with id " + checkedTask.getId() + " was planned for " + checkedTask.getPlannedFor() + "you can't modify it any more.");
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
