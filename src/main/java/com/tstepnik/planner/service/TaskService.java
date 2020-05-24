@@ -4,6 +4,8 @@ import com.tstepnik.planner.domain.task.Importance;
 import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,9 @@ public class TaskService {
         }
     }
 
-    public List<Task> getUserTasks() {
+    public Page<Task> getUserTasks(Pageable pageable) {
         User user = authService.getLoggedUser();
-        return taskRepository.getAllByUserId(user.getId());
+        return taskRepository.getAllByUserId(user.getId(),pageable);
     }
 
     public Task addTask(Task task) {

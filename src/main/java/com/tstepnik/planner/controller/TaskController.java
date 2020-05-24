@@ -2,6 +2,8 @@ package com.tstepnik.planner.controller;
 
 import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,8 +33,8 @@ public class TaskController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/mine")
-    public ResponseEntity<List<Task>> getUserTasks() {
-        List<Task> tasks = taskService.getUserTasks();
+    public ResponseEntity<Page<Task>> getUserTasks(@RequestParam Pageable pageable) {
+        Page<Task> tasks = taskService.getUserTasks(pageable);
         return ResponseEntity.ok(tasks);
     }
 
