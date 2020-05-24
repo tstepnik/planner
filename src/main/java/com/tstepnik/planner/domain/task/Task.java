@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class Task {
 
     private LocalDateTime creationDate;
 
-    @Future
+    @FutureOrPresent
     private LocalDateTime plannedFor;
 }
 

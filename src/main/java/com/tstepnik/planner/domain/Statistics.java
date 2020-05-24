@@ -23,17 +23,17 @@ public class Statistics {
 
     private Double productivity;
 
-    private Integer tasksNumber;
+    private Integer archivedTasksCount;
 
-    private Integer doneTasksNumber;
+    private Integer finishedTasksCount;
 
     private LocalDateTime creationDate;
 
     public Statistics(Long userId, Double productivity, Integer userArchivedTasks, Integer userFinishedTasks, LocalDateTime now) {
         this.userId = userId;
         this.productivity = productivity;
-        this.tasksNumber = userArchivedTasks;
-        this.doneTasksNumber = userFinishedTasks;
+        this.archivedTasksCount = userArchivedTasks;
+        this.finishedTasksCount = userFinishedTasks;
         this.creationDate = now;
     }
 }

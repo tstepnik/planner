@@ -15,21 +15,19 @@ public class StatisticsService {
 
     private final TaskRepository taskRepository;
     private final StatisticsRepository statisticsRepository;
-    private final TaskService taskService;
     private final AuthService authService;
 
     public StatisticsService(TaskRepository taskRepository, StatisticsRepository statisticsRepository,
-                             TaskService taskService, AuthService authService) {
+                             AuthService authService) {
         this.taskRepository = taskRepository;
         this.statisticsRepository = statisticsRepository;
-        this.taskService = taskService;
         this.authService = authService;
     }
 
     public Statistics createSaveAndReturnStatistics() {
         User loggedUser = authService.getLoggedUser();
         Statistics statistics = statisticsRepository.findFirstByUserIdOrderByIdDesc(loggedUser.getId());
-        if (statistics == null || isBeforeToday(statistics.getCreationDate())) {
+        if (statistics == null || statistics.getCreationDate().toLocalDate().isBefore(LocalDate.now())) {
             LocalDateTime now = LocalDateTime.now();
             DecimalFormat df = new DecimalFormat("#.#");
             Integer userArchivedTasks = countArchivedTasks();
@@ -41,13 +39,6 @@ public class StatisticsService {
 
         }
         return statistics;
-    }
-    
-    private boolean isBeforeToday(LocalDateTime creationDate) {
-        LocalDate now = LocalDate.now();
-
-        return creationDate.getDayOfYear() != now.getDayOfYear() &&
-                creationDate.getDayOfYear() <= now.getDayOfYear();
     }
 
     public Integer countArchivedTasks() {
