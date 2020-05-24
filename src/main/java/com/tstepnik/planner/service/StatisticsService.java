@@ -31,7 +31,7 @@ public class StatisticsService {
             LocalDateTime now = LocalDateTime.now();
             DecimalFormat df = new DecimalFormat("#.#");
             Integer userArchivedTasks = countArchivedTasks();
-            Integer userFinishedTasks = countFinishedTasks();
+            Integer userFinishedTasks = countArchivedAndFinishedTasks();
             Double userProductivity = ((double) userFinishedTasks / userArchivedTasks) * 100;
             String format = df.format(userProductivity).replaceAll(",", ".");
             Double productivity = Double.valueOf(format);
@@ -48,7 +48,7 @@ public class StatisticsService {
         return numberOfTasks.intValue();
     }
 
-    public Integer countFinishedTasks() {
+    public Integer countArchivedAndFinishedTasks() {
         User loggedUser = authService.getLoggedUser();
         LocalDateTime now = LocalDateTime.now();
         Long numberOfTasks = taskRepository.countAllUserFinishAndArchivedTasks(loggedUser.getId(), now);
