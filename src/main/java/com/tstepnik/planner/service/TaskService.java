@@ -58,7 +58,7 @@ public class TaskService {
         } else {
             checkedTask.setImportance(task.getImportance());
             checkedTask.setDescription(task.getDescription());
-            checkedTask.setDone(task.getDone());
+            checkedTask.setIsDone(task.getIsDone());
             return taskRepository.save(checkedTask);
         }
     }
