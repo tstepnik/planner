@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -30,9 +30,9 @@ public class Task {
 
     private Long userId;
 
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
 
     @FutureOrPresent
-    private LocalDateTime plannedFor;
+    private LocalDate plannedFor;
 
 }

@@ -49,15 +49,14 @@ public class TaskService {
     public Task addTask(Task task) {
         User user = authService.getLoggedUser();
 
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        LocalDate now = LocalDate.now();
 
         task.setCreationDate(now);
         if (task.getImportance() == null) {
             task.setImportance(DEFAULT_IMPORTANCE);
         }
         if (task.getPlannedFor() == null) {
-            LocalDateTime defaultPlannedTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT);
-            task.setPlannedFor(defaultPlannedTime);
+            task.setPlannedFor(now);
         }
         task.setUserId(user.getId());
         return taskRepository.save(task);
@@ -68,7 +67,7 @@ public class TaskService {
         Task checkedTask = taskRepository.getOne(taskId);
         if (!checkedTask.getUserId().equals(user.getId())) {
             throw new AccessDeniedException("User with login " + user.getId() + " cannot edit task with id " + taskId);
-        } else if (checkedTask.getPlannedFor().isBefore(LocalDateTime.now())) {
+        } else if (checkedTask.getPlannedFor().isBefore(LocalDate.now())) {
             throw new TaskExpiredException("Task with id " + checkedTask.getId() + " was planned for " + checkedTask.getPlannedFor() + "you can't modify it any more.");
 
         } else {

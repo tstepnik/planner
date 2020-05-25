@@ -8,6 +8,7 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="true"/>
-    
+    <include file="changelog/00000000000001_task_new_fields.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
 
