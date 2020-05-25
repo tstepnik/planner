@@ -1,12 +1,14 @@
 package com.tstepnik.planner.controller;
 
+import com.tstepnik.planner.domain.mappers.UserRegisterMapper;
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.domain.user.UserRegisterDTO;
-import com.tstepnik.planner.domain.mappers.UserRegisterMapper;
 import com.tstepnik.planner.service.RegistrationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -4,8 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -24,8 +28,14 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
-    private Boolean isDone = Boolean.FALSE;
+    private Boolean done = Boolean.FALSE;
 
     private Long userId;
 
+    private LocalDateTime creationDate;
+
+    @FutureOrPresent
+    private LocalDateTime plannedFor;
 }
+
+
