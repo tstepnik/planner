@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="autoIncrement" value="true"/>
+
+    <changeSet author="tstepnik" id="20190525094927_task_new_fields">
+        <addColumn tableName="task">
+            <column name="user_id" type="bigint"></column>
+            <column name="creation_date" type="date"></column>
+            <column name="planned_for" type="date"></column>
+        </addColumn>
+        <renameColumn tableName="task" oldColumnName="isDone" newColumnName="done"></renameColumn>
+    </changeSet>
+</databaseChangeLog>

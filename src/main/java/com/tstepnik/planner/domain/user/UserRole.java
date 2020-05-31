@@ -22,5 +22,4 @@ public class UserRole {
     public UserRole(Role role) {
         this.role = role;
     }
-
 }
