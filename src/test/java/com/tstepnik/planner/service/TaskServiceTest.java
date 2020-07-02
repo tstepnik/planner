@@ -4,7 +4,6 @@ import com.tstepnik.planner.domain.task.Importance;
 import com.tstepnik.planner.domain.task.Task;
 import com.tstepnik.planner.domain.user.User;
 import com.tstepnik.planner.repository.TaskRepository;
-import com.tstepnik.planner.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collection;
 import java.util.Collections;
 
 import static org.mockito.Mockito.when;
